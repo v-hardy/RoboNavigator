@@ -1,4 +1,5 @@
 #include "mapa.h"
+#include "robot.h"
 #include "interfaz.h"
 #include <stdio.h>
 
@@ -6,7 +7,7 @@ extern int matriz[FILAS][COLUMNAS];
 
 void opcion_uno() {
   puts("\nEjecutando la opción UNO...");
-  rellenar_matriz(matriz);
+  //inicializar_robot(Robot* robot);
 }
 
 void opcion_dos() {

@@ -12,7 +12,7 @@ void mostrar_menu() {
         puts("\n++++++++++++++++++++++++++++++++++++");
         puts(" Bienvenido al sistema de control!! ");
         puts("++++++++++++++++++++++++++++++++++++");
-        puts("  1.- Generar Matriz Aleatoria");
+        puts("  1.- Ingresar coordenadas de desplazamiento del robot");
         puts("  2.- Imprimir matriz");
         puts("  3.- Mapa ASCII con simuilacion de robot");
         puts("  4.- Salir");

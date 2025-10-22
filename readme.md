@@ -63,11 +63,11 @@ Desarrollar una aplicación en lenguaje C que simule la navegación autónoma de
 La aplicación se ejecuta por **consola**, utilizando **arte ASCII** para representar visualmente el mapa y el recorrido del robot.  
 Ejemplo:
 
-░░░░█░░░░░░█░░░
-░░░░░░░█░░░░░░X
-░░█░░█░░█░░█░░░
-░░█░░█░░█░░█░█░
-░R░░░░░░░░░░░░░
+░░░░█░░░░░░█░░░    
+░░░░░░░█░░░░░░X    
+░░█░░█░░█░░█░░░    
+░░█░░█░░█░░█░█░    
+░R░░░░░░░░░░░░░    
 
 
 ---

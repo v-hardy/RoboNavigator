@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "mapa.h"
+#include "robot.h"
 #include "interfaz.h"
 
 // ✅ Aquí sí definimos la matriz global
@@ -19,6 +20,7 @@ void rellenar_matriz(int matriz[FILAS][COLUMNAS]) {
 
 // Función para imprimir la matriz como números
 void imprimir_matriz(int matriz[FILAS][COLUMNAS]) {
+    matriz[0][1] = 2;
     for (int i = 0; i < FILAS; i++) {
         for (int j = 0; j < COLUMNAS; j++) {
             printf("%d ", matriz[i][j]);
@@ -29,13 +31,35 @@ void imprimir_matriz(int matriz[FILAS][COLUMNAS]) {
 
 // Función para imprimir la matriz como mapa ASCII
 void imprimir_mapa_ascii(int matriz[FILAS][COLUMNAS]) {
+    matriz[0][1] = 2;
     for (int i = 0; i < FILAS; i++) {
+        if (i == 0) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                printf(" %d", j+1 );
+                if ( j+1 == COLUMNAS ) {
+                    printf("\n");
+                }
+            }
+        } 
         for (int j = 0; j < COLUMNAS; j++) {
-            if (matriz[i][j] == 1)
-                printf("█");  // Obstáculo
-            else
-                printf("░");  // Espacio libre
+            if (matriz[i][j] == 1) {
+                printf("██");  // Obstáculo
+            } else if (matriz[i][j] == 2) {
+                printf("<>");  // Robot
+            } else {
+                printf("░░");  // Espacio libre
+            }
         }
-        printf("\n");
+        printf("%d\n", i+1 );
     }
+}
+
+Posicion obtener_posicion_inicial_robot(void) {
+    Posicion p = {0, 0}; // O lo que sea
+    return p;
+}
+
+Posicion obtener_destino_robot(void) {
+    Posicion p = {5, 5}; // O lo que sea
+    return p;
 }
