@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>   
+#include <time.h>
+//para el encoding
+#include <windows.h>
 
 #include "mapa.h"
 #include "interfaz.h"
@@ -9,6 +11,9 @@
 Robot robot;  // aquí defines tu robot global
 
 void mostrar_menu() {
+    //para el encoding
+    SetConsoleOutputCP(CP_UTF8);
+    
     int opcion = 0;
     
     do {
