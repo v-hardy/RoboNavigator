@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 //para el encoding
-#include <windows.h>
+#include <windows.h> //Se debe eliminar si se ejecuta en Linux
 
 #include "mapa.h"
 #include "interfaz.h"
@@ -12,7 +12,7 @@ Robot robot;  // aquí defines tu robot global
 
 void mostrar_menu() {
     //para el encoding
-    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8); //Se debe eliminar si se ejecuta en Linux
     
     int opcion = 0;
     
