@@ -5,6 +5,9 @@
 #include "mapa.h"
 #include "interfaz.h"
 
+#include "robot.h" 
+Robot robot;  // aquí defines tu robot global
+
 void mostrar_menu() {
     int opcion = 0;
     
@@ -21,13 +24,13 @@ void mostrar_menu() {
 
         switch(opcion) {
             case 1:
-                opcion_uno();
+                opcion_uno(&robot);
                 break;
             case 2:
-                opcion_dos();
+                opcion_dos(&robot);
                 break;
             case 3:
-                opcion_tres();
+                opcion_tres(&robot);
                 break;
             case 4:
                 puts("Saliendo del programa... ¡Hasta luego!");
@@ -39,6 +42,21 @@ void mostrar_menu() {
     } while(opcion != 4);
 }
 
+// Menú de opciones
+// =======================================
+//    SISTEMA DE NAVEGACIÓN DEL ROBOT
+// =======================================
+// Seleccione una opción:
+
+// 1. Establecer destino manualmente
+// 2. Mostrar mapa actual
+// 3. Planificar ruta hacia el destino
+// 4. Mover robot hacia el destino
+// 5. Mostrar ruta calculada
+// 6. Reconfigurar mapa (resetear obstáculos)
+// 7. Ver estado del robot
+// 8. Salir
+// =======================================
 
 int main() {
 

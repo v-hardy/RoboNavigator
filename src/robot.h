@@ -2,7 +2,7 @@
 #define ROBOT_H
 
 #include <stdbool.h>
-#include "mapa.h" // Se incluye para acceder a Posicion
+#include "posicion.h"
 
 typedef struct {
     Posicion posicion_actual;

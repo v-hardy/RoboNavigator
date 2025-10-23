@@ -1,4 +1,5 @@
 #include "robot.h"
+#include "mapa.h"   // 👈 necesario para obtener_posicion_inicial_robot() y obtener_destino_robot()
 #include <stdio.h>
 
 // Inicializa el robot con posición y destino desde el mapa
