@@ -6,6 +6,7 @@
     #include <windows.h>
 #endif
 
+
 #include "mapa.h"
 #include "interfaz.h"
 #include "robot.h" 
@@ -13,19 +14,10 @@
 Robot *robot = NULL;  // Puntero a Robot, inicializado a NULL
 
 void mostrar_menu() {
-    // Para el encoding en Windows
-    #ifdef _WIN32
-        SetConsoleOutputCP(CP_UTF8);
-    #endif
-    
-    int opcion = 0;
-
-    do {
         puts(" ==============================================");
         puts("  Bienvenido al SISTEMA DE CONTROL DEL ROBOT!! ");
         puts(" ==============================================");
-        puts("  Seleccione una opción:");
-        puts(" ");
+        puts("  Seleccione una opción:\n");
         puts("  1.- Cargar mapa actual");
         puts("  2.- Establecer coordenadas del robot");
         puts("  3.- Mostrar Mapa+Robot ASCII ");
@@ -36,8 +28,29 @@ void mostrar_menu() {
         puts("  8.- Ver estado del robot");
         puts("  0.- Salir");
         puts(" ==============================================");
+}
+
+
+int main() {
+
+    // Para el encoding en Windows
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+    #endif
+    
+    // Inicializar la semilla del generador aleatorio
+    srand(time(NULL));
+
+    int opcion = 0;
+
+    do {
+        limpiarPantalla(); 
+        mostrar_menu();
         printf("Ingrese una opcion valida: ");
         scanf("%d", &opcion);
+        
+        limpiarPantalla();      // 🔹 Limpia antes de ejecutar la acción      
+        mostrar_menu();
 
         switch(opcion) {
             case 1:
@@ -71,14 +84,14 @@ void mostrar_menu() {
                 puts("Opcion invalida. Intente nuevamente.");
                 break;
         }
+
+        if (opcion != 0) {
+            puts("\nPresione ENTER para continuar...");
+            getchar(); getchar(); // Espera antes de refrescar pantalla
+        }
+
     } while(opcion != 0);
-}
-
-int main() {
-
-    // Inicializar la semilla del generador aleatorio
-    srand(time(NULL));
-    mostrar_menu();
+    
     
     return 0;
 }
