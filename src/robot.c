@@ -39,8 +39,8 @@ void mover_robot(Robot* robot) {
 // Imprime el estado actual del robot
 void imprimir_estado_robot(const Robot* robot) {
     if (robot == NULL) return;
-    printf("Posición actual: (%d, %d)\n", robot->posicion_actual.x, robot->posicion_actual.y);
-    printf("Destino: (%d, %d)\n", robot->destino.x, robot->destino.y);
+    printf("Posición actual: (%d, %d)\n", robot->posicion_actual.x+1, robot->posicion_actual.y+1);
+    printf("Destino: (%d, %d)\n", robot->destino.x+1, robot->destino.y+1);
     printf("¿Ha llegado?: %s\n", robot->ha_llegado ? "Sí" : "No");
 }
 
