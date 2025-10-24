@@ -33,5 +33,7 @@ build/
 
 programa
 
-
+/temporales de gestionar de datos de sistema de archivos FUSE(Unix)
 .fuse_hidden*
+
+*.bkp

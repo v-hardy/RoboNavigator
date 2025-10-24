@@ -7,18 +7,39 @@
 #include "interfaz.h"
 
 // ✅ Aquí sí definimos la matriz global
-int matriz[FILAS][COLUMNAS];
+int matriz[FILAS][COLUMNAS] = {0};
+
 int direcciones[5][2];
 
-// Función para rellenar la matriz con 0 y 1 (20% de 1)
-void rellenar_matriz(int matriz[FILAS][COLUMNAS], Robot *robot) {
+// Función para verificar si la matriz está vacía (todos los elementos son 0)
+bool matriz_vacia(int matriz[FILAS][COLUMNAS]) {
     for (int i = 0; i < FILAS; i++) {
         for (int j = 0; j < COLUMNAS; j++) {
-            // 20% de probabilidad de obstáculo (1), resto vacío (0)
-            matriz[i][j] = (rand() % 100 < 20) ? 1 : 0;
+            if (matriz[i][j] != 0) {
+                return false;  // Si encontramos un valor distinto de 0, la matriz no está vacía
+            }
         }
     }
+    return true;  // Si no encontramos valores distintos de 0, la matriz está vacía
+}
+// Función para rellenar la matriz con 0 y 1 (20% de 1)
+void cargar_matriz(int matriz[FILAS][COLUMNAS]) {
+    bool vacia = matriz_vacia(matriz);
+    if (vacia) {
+        // ACA SE DEBERIA REEMPLAZAR POR MAPAS DEFINIDOS
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                // 20% de probabilidad de obstáculo (1), resto vacío (0)
+                matriz[i][j] = (rand() % 100 < 20) ? 1 : 0;
+            }
+        }
+    } else {
+        printf("Refrescando el mapa...\n");
+    }
+}
 
+// Función para imprimir la matriz como números
+void imprimir_matriz(int matriz[FILAS][COLUMNAS], Robot* robot) {
     // Marcar la posición actual del robot con un 2
     matriz[robot->posicion_actual.x][robot->posicion_actual.y] = 2;
 
@@ -29,12 +50,8 @@ void rellenar_matriz(int matriz[FILAS][COLUMNAS], Robot *robot) {
     //matriz[robot->destino.x][robot->destino.y] = 4;
 
     // (Opcional) marcar destino con un 5, por ejemplo
-    matriz[robot->destino.x][robot->destino.y] = 5;
-}
+    matriz[robot->posicion_destino.x][robot->posicion_destino.y] = 5;
 
-// Función para imprimir la matriz como números
-void imprimir_matriz(int matriz[FILAS][COLUMNAS]) {
-    //matriz[0][1] = 2;
     for (int i = 0; i < FILAS; i++) {
         for (int j = 0; j < COLUMNAS; j++) {
             printf("%d ", matriz[i][j]);
@@ -44,8 +61,19 @@ void imprimir_matriz(int matriz[FILAS][COLUMNAS]) {
 }
 
 // Función para imprimir la matriz como mapa ASCII
-void imprimir_mapa_ascii(int matriz[FILAS][COLUMNAS]) {
-    
+void imprimir_mapa_ascii(int matriz[FILAS][COLUMNAS], Robot* robot) {
+    // Marcar la posición actual del robot con un 2
+    matriz[robot->posicion_actual.x][robot->posicion_actual.y] = 2;
+
+    // agregar logica para lo recorrido
+    //matriz[robot->destino.x][robot->destino.y] = 3;
+
+    // agregar logica para paradas intermedias
+    //matriz[robot->destino.x][robot->destino.y] = 4;
+
+    // (Opcional) marcar destino con un 5, por ejemplo
+    matriz[robot->posicion_destino.x][robot->posicion_destino.y] = 5;
+
     for (int i = 0; i < FILAS; i++) {
         printf("  ");
         if (i == 0) {
@@ -83,7 +111,7 @@ void imprimir_mapa_ascii(int matriz[FILAS][COLUMNAS]) {
     }
 }
 
-Posicion obtener_posicion_inicial_robot(void) {
+Posicion capturar_posiciones_iniciales_del_robot(void) {
     Posicion p;
     do {
         printf("Ingrese la posición inicial del robot (x y): ");

@@ -5,8 +5,9 @@
 #include "posicion.h"
 
 typedef struct {
+    Posicion posicion_inicial;
     Posicion posicion_actual;
-    Posicion destino;
+    Posicion posicion_destino;
     bool ha_llegado;
 } Robot;
 
