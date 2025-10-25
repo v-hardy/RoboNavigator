@@ -10,9 +10,9 @@
 
 extern int matriz[FILAS][COLUMNAS];  // Solo la declaración
 
-void cargar_matriz(int matriz[FILAS][COLUMNAS]);
-void imprimir_matriz(int matriz[FILAS][COLUMNAS], Robot* robot);
-void imprimir_mapa_ascii(int matriz[FILAS][COLUMNAS], Robot* robot);
+void cargar_matriz();
+void imprimir_matriz();
+void imprimir_mapa_ascii();
 
 // PARA EL ROBOT
 

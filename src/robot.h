@@ -12,15 +12,17 @@ typedef struct {
 } Robot;
 
 // Inicializa el robot con las posiciones obtenidas del mapa
-void inicializar_robot(Robot* robot);
+void inicializar_robot();
+
+bool verificar_todos_adyacentes();
 
 // Mueve el robot un paso hacia su destino
-void mover_robot(Robot* robot);
+void mover_robot();
 
 // Verifica si el robot ha llegado a su destino
-bool robot_ha_llegado(const Robot* robot);
+bool robot_ha_llegado();
 
 // Imprime el estado actual del robot (para depuración)
-void imprimir_estado_robot(const Robot* robot);
+void imprimir_estado_robot();
 
 #endif // ROBOT_H

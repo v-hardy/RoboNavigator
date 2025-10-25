@@ -11,7 +11,8 @@
 #include "interfaz.h"
 #include "robot.h" 
 
-Robot *robot = NULL;  // Puntero a Robot, inicializado a NULL
+// Robot *robot = NULL;  // Puntero a Robot, inicializado a NULL
+Robot robot = {-1, -1, -1, false};
 
 void mostrar_menu() {
         puts(" ==============================================");
@@ -54,20 +55,20 @@ int main() {
 
         switch(opcion) {
             case 1:
-                opcion_uno(&robot);
+                opcion_uno();
                 break;
             case 2:
-                opcion_dos(&robot);
+                opcion_dos();
                 break;
             case 3:
-                if (robot == NULL) {
+                if (robot.posicion_actual.x == -1) {
                     printf("⚠️  No se puede mostrar el mapa porque el robot no fue inicializado.\n");
                 } else {
-                    opcion_tres(&robot);
+                    opcion_tres();
                 }
                 break;
             case 4:
-                opcion_cuatro(&robot);
+                opcion_cuatro();
                 break;
             case 5:
                 puts("Opcion Numero 5!");
