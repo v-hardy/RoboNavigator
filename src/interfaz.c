@@ -43,7 +43,14 @@ void opcion_tres() {
 }
 
 void opcion_cuatro() {
-    puts("Opcion Numero 4!");
+    puts("Acá la logica de Planificar ruta hacia el destino");
+    //continuar por algoritmo de dijkstra o A*
+}
+
+void opcion_cinco() {
+    puts("Movimiento bruto");
+    mover_robot(); // el verificar_todos_adyacentes(); deberia estar dentro del mover para detectar el casillero libre y mover
+    imprimir_mapa_ascii();
 }
 
 void limpiarPantalla() {

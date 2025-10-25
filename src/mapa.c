@@ -48,12 +48,14 @@ bool matriz_vacia(int matriz[FILAS][COLUMNAS]) {
 }
 // Función para rellenar la matriz con 0 y 1
 void cargar_matriz() {
-        
-        // ACA SE DEBERIA REEMPLAZAR POR MAPAS DEFINIDOS
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                // 20% de probabilidad de obstáculo (1), resto vacío (0)
-                matriz[i][j] = (rand() % 100 < 20) ? 1 : 0;
+    // ACA SE DEBERIA REEMPLAZAR POR MAPAS DEFINIDOS
+        bool vacia = matriz_vacia(matriz);
+        if (vacia) {   
+            for (int i = 0; i < FILAS; i++) {
+                for (int j = 0; j < COLUMNAS; j++) {
+                    // 20% de probabilidad de obstáculo (1), resto vacío (0)
+                    matriz[i][j] = (rand() % 100 < 20) ? 1 : 0;
+                }
             }
         }
 }

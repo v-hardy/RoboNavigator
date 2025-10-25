@@ -65,7 +65,7 @@ int main() {
                 break;
             case 3:
                 if (robot.posicion_actual.x == -1) {
-                    printf("⚠️ \033[33m\033[1m No se puede mostrar el mapa porque. Robot no inicializado.\033[0m\n");
+                    printf("⚠️ \033[33m\033[1m No se puede mostrar mapa. Robot no inicializado.\033[0m\n");
                 } else {
                     opcion_tres();
                 }
@@ -74,7 +74,14 @@ int main() {
                 opcion_cuatro();
                 break;
             case 5:
-                puts("Opcion Numero 5!");
+                if (robot.ha_llegado == 1) {
+                    printf("⚠️ \033[33m\033[1m el Robot ya se encuentra en el destino.\033[0m\n");
+                } else {
+                    // LUEGO DE OBTENER LA LISTA CON EL RECORRIDO OPTIMO QUE HARIA EL ROBOT
+                    // ESTA FUNCION DEBERIA ESTAR DENTRO DE UNA ITERACION CON SLEEP PARA 
+                    // SIMUMULAR EL MOVIMIENTO...
+                    opcion_cinco();
+                }
                 break;
             case 6:
                 puts("Opcion Numero 6!");
@@ -83,7 +90,8 @@ int main() {
                 puts("Opcion Numero 7!");
                 break;
             case 8:
-                puts("Opcion Numero 8!");
+                puts("\n\033[1m\033[4mMostrando datos de la matriz...\033[0m\n");
+                imprimir_matriz();
                 break;
             case 0:
                 puts("Saliendo del programa... ¡Hasta luego!");
@@ -95,8 +103,10 @@ int main() {
 
         if (opcion != 0) {
             printf("Ingrese una opcion valida: ");
+
+            // FALTA CORREGIR EL "DESFASE" Y EL INGRESE QUE SALE 2 VECES
             // Usar secuencias de escape ANSI para mover el cursor hacia la línea donde empieza el mensaje de "Ingrese una opción válida: "
-            // Esto depende de dónde se encuentra el mensaje exacto en tu terminal, en este caso, estamos usando una aproximación.
+            // Esto depende de dónde se encuentra el mensaje exacto en el terminal.
             printf("\033[F");  // Mueve el cursor hacia arriba (al inicio de la línea donde se mostró "Ingrese una opcion valida:")
             // Ahora, podemos borrar todo el contenido de esa línea con espacios o simplemente imprimir en blanco:
             

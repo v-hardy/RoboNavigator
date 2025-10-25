@@ -33,6 +33,8 @@ bool verificar_todos_adyacentes() {
     printf("\n arriba %d", arriba);
     printf("\n abajo %d", abajo);
 
+    //asi siempre va a devolver falto por el rastro de propio 2, entonces
+    //se deberia tener en cuenta cambiar el valor del casillero que abandona el robot
     if(izq == 0 && der == 0 && arriba == 0 && abajo == 0){
         puts("verdadero!");
         return true;
