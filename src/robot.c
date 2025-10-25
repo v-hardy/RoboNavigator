@@ -44,21 +44,49 @@ bool verificar_todos_adyacentes() {
     }
 }
 
-// Mueve el robot un paso hacia el destino
 void mover_robot() {
     if (robot.ha_llegado == true) return;
+    //Version Original (muy bruta sin evitar obstaculos)
+    // if (robot.posicion_actual.x < robot.posicion_destino.x) {
+    //     robot.posicion_actual.x++;
+    // } else if (robot.posicion_actual.x > robot.posicion_destino.x) {
+    //     robot.posicion_actual.x--;
+    // }
 
+    // if (robot.posicion_actual.y < robot.posicion_destino.y) {
+    //     robot.posicion_actual.y++;
+    // } else if (robot.posicion_actual.y > robot.posicion_destino.y) {
+    //     robot.posicion_actual.y--;
+    // }
+
+    //Separar en eje 'x' e 'y'    
+    //Opcion 1 Priorizar un eje sobre otro (ejemplo 'x' primero, luego 'y')
+    int s_casillero;
     if (robot.posicion_actual.x < robot.posicion_destino.x) {
-        robot.posicion_actual.x++;
-    } else if (robot.posicion_actual.x > robot.posicion_destino.x) {
-        robot.posicion_actual.x--;
-    }
+        // robot.posicion_actual.x++; //ver original
+        s_casillero = matriz[robot.posicion_actual.x+1][robot.posicion_actual.y];
+        printf("caseillero x++ %d", s_casillero);
+        if(s_casillero == 0){
+            matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 3; //dejar rastro
+            robot.posicion_actual.x++;
+        }
 
-    if (robot.posicion_actual.y < robot.posicion_destino.y) {
-        robot.posicion_actual.y++;
-    } else if (robot.posicion_actual.y > robot.posicion_destino.y) {
-        robot.posicion_actual.y--;
+    } else if (robot.posicion_actual.x > robot.posicion_destino.x) {
+        // robot.posicion_actual.x--; 
+        s_casillero = matriz[robot.posicion_actual.x-1][robot.posicion_actual.y];
+        printf("caseillero x-- %d", s_casillero);
+
+        if(s_casillero == 0){
+            matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 3; //dejar rastro
+            robot.posicion_actual.x--;
+        }
     }
+    
+    //  matriz[robot.posicion_actual.x][robot.posicion_actual.y];
+
+
+    //Opcion 2 50%50 de probabilidad de mover en 'x' o en 'y'
+
 
     robot.ha_llegado = robot_ha_llegado();
 }
