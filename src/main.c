@@ -6,7 +6,6 @@
     #include <windows.h>
 #endif
 
-
 #include "mapa.h"
 #include "interfaz.h"
 #include "robot.h" 
@@ -44,14 +43,18 @@ int main() {
 
     int opcion = 0;
 
+    // mostrar_menu();
+    // printf("Ingrese una opcion valida: ");
+    
     do {
-        limpiarPantalla(); 
+        // limpiarPantalla(); 
         mostrar_menu();
         printf("Ingrese una opcion valida: ");
-        scanf("%d", &opcion);
-        
-        limpiarPantalla();   
-        mostrar_menu();
+        if (opcion == 0) {
+            scanf("%d", &opcion);
+        }
+        //limpiarPantalla();   
+        //mostrar_menu();
 
         switch(opcion) {
             case 1:
@@ -62,7 +65,7 @@ int main() {
                 break;
             case 3:
                 if (robot.posicion_actual.x == -1) {
-                    printf("⚠️  No se puede mostrar el mapa porque el robot no fue inicializado.\n");
+                    printf("⚠️ \033[33m\033[1m No se puede mostrar el mapa porque. Robot no inicializado.\033[0m\n");
                 } else {
                     opcion_tres();
                 }
@@ -91,8 +94,17 @@ int main() {
         }
 
         if (opcion != 0) {
-            puts("\nPresione ENTER para continuar...");
-            getchar(); getchar(); // Espera antes de refrescar pantalla
+            printf("Ingrese una opcion valida: ");
+            // Usar secuencias de escape ANSI para mover el cursor hacia la línea donde empieza el mensaje de "Ingrese una opción válida: "
+            // Esto depende de dónde se encuentra el mensaje exacto en tu terminal, en este caso, estamos usando una aproximación.
+            printf("\033[F");  // Mueve el cursor hacia arriba (al inicio de la línea donde se mostró "Ingrese una opcion valida:")
+            // Ahora, podemos borrar todo el contenido de esa línea con espacios o simplemente imprimir en blanco:
+            
+            scanf("%d", &opcion);
+            printf("\033[K");  // Borra la línea desde el cursor hasta el final            
+            
+
+            limpiarPantalla(); 
         }
 
     } while(opcion != 0);

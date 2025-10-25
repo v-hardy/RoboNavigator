@@ -46,7 +46,7 @@ bool matriz_vacia(int matriz[FILAS][COLUMNAS]) {
     }
     return true;  // Si no encontramos valores distintos de 0, la matriz está vacía
 }
-// Función para rellenar la matriz con 0 y 1 (20% de 1)
+// Función para rellenar la matriz con 0 y 1
 void cargar_matriz() {
         
         // ACA SE DEBERIA REEMPLAZAR POR MAPAS DEFINIDOS
@@ -61,19 +61,17 @@ void cargar_matriz() {
 // Función para imprimir la matriz como números
 void imprimir_matriz() {
     
-    if (robot.posicion_actual.x == -1) {
-        printf("⚠️  El robot no ha sido inicializado.\n");
-    } else {
+    if (robot.posicion_actual.x != -1) {
         printf("✅  El robot está inicializado y listo para usar.\n");
     
         // Marcar la posición actual del robot con un 2
         matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 2;
 
         // agregar logica para lo recorrido
-        //matriz[robot.destino.x][robot.destino.y] = 3;
+        //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 3;
 
         // agregar logica para paradas intermedias
-        //matriz[robot.destino.x][robot.destino.y] = 4;
+        //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 4;
 
         // (Opcional) marcar destino con un 5, por ejemplo
         matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 5;
@@ -85,6 +83,10 @@ void imprimir_matriz() {
         }
         printf("\n");
     }
+
+    if (robot.posicion_actual.x == -1) {
+        printf("⚠️  El robot no ha sido inicializado.\n");
+    }
 }
 
 // Función para imprimir la matriz como mapa ASCII
@@ -93,10 +95,10 @@ void imprimir_mapa_ascii() {
     matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 2;
 
     // agregar logica para lo recorrido
-    //matriz[robot.destino.x][robot.destino.y] = 3;
+    //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 3;
 
     // agregar logica para paradas intermedias
-    //matriz[robot.destino.x][robot.destino.y] = 4;
+    //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 4;
 
     // (Opcional) marcar destino con un 5, por ejemplo
     matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 5;

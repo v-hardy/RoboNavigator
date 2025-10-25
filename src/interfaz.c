@@ -16,23 +16,27 @@ void opcion_uno() {
       imprimir_matriz();
       
     } else {
-    puts("\n 🗺️ El mapa ya fue cargado previamente.​");
-    //PODEMOS MOSTRARLO
+    puts("\n 🗺️  El mapa ya fue cargado previamente.​");
+    //PODEMOS PREGUNTAR SI DESEA MOSTRARLO
   }
 }
 
 void opcion_dos() {
-    puts("\nEstablecer coordenadas manualmente..."); 
-    puts("\nRECUERDE: El valor de la posicion va de 1 a 20"); 
-    inicializar_robot();      // inicializar el robot
-    imprimir_estado_robot();  // mostrar su estado (opcional)
+    bool vacia = matriz_vacia(matriz);
+    if (vacia) {
+      puts("⚠️  No se puede establecer coordenadas debe cargar el mapa antes.");
+    } else {
+      puts("\nRECUERDE: Para establecer coordenadas, el valor de \nla posicion osila de 1 a 20, en X e Y.\n");
+      inicializar_robot();      // inicializar el robot
+      imprimir_estado_robot();  // mostrar su estado (opcional)
+    }
 }
 
 void opcion_tres() {
     if (robot.posicion_actual.x == -1) {
       puts("\nPrimero de Inicializar el robot!...🤖​");
     } else { 
-      puts("\n  🗺️ Generando Mapa...\n");
+      puts("\n  🗺️  Generando Mapa...\n");
       cargar_matriz();
       imprimir_mapa_ascii();
     }
