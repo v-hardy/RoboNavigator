@@ -10,6 +10,7 @@
 
 extern int matriz[FILAS][COLUMNAS];  // Solo la declaración
 
+bool matriz_vacia();
 void cargar_matriz();
 void imprimir_matriz();
 void imprimir_mapa_ascii();
