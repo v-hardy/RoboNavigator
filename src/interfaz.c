@@ -33,6 +33,10 @@ void opcion_tres(Robot* robot) {
     }
 }
 
+void opcion_cuatro(Robot* robot) {
+    puts("Opcion Numero 4!");
+}
+
 void limpiarPantalla() {
     #ifdef _WIN32
         system("cls");

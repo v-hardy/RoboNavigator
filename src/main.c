@@ -49,7 +49,7 @@ int main() {
         printf("Ingrese una opcion valida: ");
         scanf("%d", &opcion);
         
-        limpiarPantalla();      // 🔹 Limpia antes de ejecutar la acción      
+        limpiarPantalla();   
         mostrar_menu();
 
         switch(opcion) {
@@ -60,10 +60,14 @@ int main() {
                 opcion_dos(&robot);
                 break;
             case 3:
-                opcion_tres(&robot);
+                if (robot == NULL) {
+                    printf("⚠️  No se puede mostrar el mapa porque el robot no fue inicializado.\n");
+                } else {
+                    opcion_tres(&robot);
+                }
                 break;
             case 4:
-                puts("Opcion Numero 4!");
+                opcion_cuatro(&robot);
                 break;
             case 5:
                 puts("Opcion Numero 5!");

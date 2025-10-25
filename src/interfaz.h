@@ -6,5 +6,6 @@ void opcion_cero();
 void opcion_uno();
 void opcion_dos();
 void opcion_tres();
+void limpiarPantalla();
 
 #endif

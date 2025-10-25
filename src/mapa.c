@@ -64,17 +64,24 @@ void cargar_matriz(int matriz[FILAS][COLUMNAS]) {
 
 // Función para imprimir la matriz como números
 void imprimir_matriz(int matriz[FILAS][COLUMNAS], Robot* robot) {
-    // Marcar la posición actual del robot con un 2
-    matriz[robot->posicion_actual.x][robot->posicion_actual.y] = 2;
+    
+    if (robot == NULL) {
+        printf("⚠️  El robot no ha sido inicializado.\n");
+    } else {
+        printf("✅  El robot está inicializado y listo para usar.\n");
+    
+        // Marcar la posición actual del robot con un 2
+        matriz[robot->posicion_actual.x][robot->posicion_actual.y] = 2;
 
-    // agregar logica para lo recorrido
-    //matriz[robot->destino.x][robot->destino.y] = 3;
+        // agregar logica para lo recorrido
+        //matriz[robot->destino.x][robot->destino.y] = 3;
 
-    // agregar logica para paradas intermedias
-    //matriz[robot->destino.x][robot->destino.y] = 4;
+        // agregar logica para paradas intermedias
+        //matriz[robot->destino.x][robot->destino.y] = 4;
 
-    // (Opcional) marcar destino con un 5, por ejemplo
-    matriz[robot->posicion_destino.x][robot->posicion_destino.y] = 5;
+        // (Opcional) marcar destino con un 5, por ejemplo
+        matriz[robot->posicion_destino.x][robot->posicion_destino.y] = 5;
+    }
 
     for (int i = 0; i < FILAS; i++) {
         for (int j = 0; j < COLUMNAS; j++) {
