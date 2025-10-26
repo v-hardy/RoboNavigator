@@ -14,7 +14,7 @@ typedef struct {
 // Inicializa el robot con las posiciones obtenidas del mapa
 void inicializar_robot();
 
-bool verificar_todos_adyacentes();
+int verificar_todos_adyacentes();
 
 // Mueve el robot un paso hacia su destino
 void mover_robot();

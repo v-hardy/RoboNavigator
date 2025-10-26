@@ -104,7 +104,7 @@ void imprimir_mapa_ascii() {
 
     // (Opcional) marcar destino con un 5, por ejemplo
     matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 5;
-
+    puts("\n");
     for (int i = 0; i < FILAS; i++) {
         printf("  ");
         if (i == 0) {
