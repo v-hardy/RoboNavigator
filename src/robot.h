@@ -11,10 +11,19 @@ typedef struct {
     bool ha_llegado;
 } Robot;
 
+typedef struct {
+    int arriba;
+    int derecha;
+    int abajo;
+    int izquierda;
+} Desplazamiento;
+
 // Inicializa el robot con las posiciones obtenidas del mapa
 void inicializar_robot();
 
 int verificar_todos_adyacentes();
+
+int prioridad_de_sentido();
 
 // Mueve el robot un paso hacia su destino
 void mover_robot();
