@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 #include "posicion.h"
+extern Posicion p;
+extern Delta delta;
 
 typedef struct {
     Posicion posicion_inicial;
@@ -34,4 +36,13 @@ bool robot_ha_llegado();
 // Imprime el estado actual del robot (para depuración)
 void imprimir_estado_robot();
 
-#endif // ROBOT_H
+// Imprime el rastro
+void imprimir_rastro_del_robot();
+
+// Devuelve la posición inicial del robot
+Posicion capturar_posiciones_iniciales_del_robot();
+
+// Devuelve la posición de destino del robot
+Posicion obtener_destino_robot();
+
+#endif

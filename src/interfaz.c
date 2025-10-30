@@ -10,23 +10,22 @@ extern Robot robot;
 void opcion_uno() {
     bool vacia = matriz_vacia(matriz);
     if (vacia) {
-      cargar_matriz();
-      
-      puts("\nMostrando datos de la matriz...");
-      imprimir_matriz();
+      cargar_matriz();      
+      imprimir_mapa_ascii();
       
     } else {
-    puts("\n 🗺️  El mapa ya fue cargado previamente.​");
+    puts("\n  🗺️  El mapa ya fue cargado previamente.​");
     //PODEMOS PREGUNTAR SI DESEA MOSTRARLO
+    imprimir_mapa_ascii();
   }
 }
 
 void opcion_dos() {
     bool vacia = matriz_vacia(matriz);
     if (vacia) {
-      puts("⚠️  No se puede establecer coordenadas debe cargar el mapa antes.");
+      puts(" \n\033[33m\033[1m⚠️  No se puede establecer coordenadas debe cargar el mapa antes.\033[0m\n");
     } else {
-      puts("\nRECUERDE: Para establecer coordenadas, el valor de \nla posicion osila de 1 a 20, en X e Y.\n");
+      imprimir_mapa_ascii();
       inicializar_robot();      // inicializar el robot
       imprimir_estado_robot();  // mostrar su estado (opcional)
     }
@@ -34,10 +33,10 @@ void opcion_dos() {
 
 void opcion_tres() {
     if (robot.posicion_actual.x == -1) {
-      puts("\nPrimero de Inicializar el robot!...🤖​");
+      puts(" \n\033[33m\033[1m⚠️  No se puede mostrar mapa. 🤖 Robot no inicializado.\033[0m\n");
     } else { 
-      puts("\n  🗺️  Generando Mapa...\n");
-      cargar_matriz();
+      
+      imprimir_rastro_del_robot();
       imprimir_mapa_ascii();
     }
 }
@@ -48,15 +47,24 @@ void opcion_cuatro() {
 }
 
 void opcion_cinco() {
-    puts("Movimiento bruto");
-    mover_robot(); // el verificar_todos_adyacentes(); deberia estar dentro del mover para detectar el casillero libre y mover
-    imprimir_mapa_ascii();
+    mover_robot(); // si solo si esta inicializado y no esta en el fin
+    imprimir_rastro_del_robot();
+    if (robot.posicion_actual.x != -1) {
+      imprimir_mapa_ascii();
+    } 
 }
 
-void limpiarPantalla() {
+void opcion_ocho() {
+  puts("\n  \033[1m\033[4mEstado actual del mapa y robot:\033[0m");
+  imprimir_estado_robot();
+  imprimir_rastro_del_robot();
+  imprimir_matriz();
+}
+
+void limpiarPantalla(void) {
     #ifdef _WIN32
         system("cls");
     #else
-        system("clear");
+        (void) system("clear"); // o para capturar int r = system("clear");
     #endif
 }

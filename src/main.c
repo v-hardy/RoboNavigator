@@ -10,8 +10,7 @@
 #include "interfaz.h"
 #include "robot.h" 
 
-// Robot *robot = NULL;  // Puntero a Robot, inicializado a NULL
-Robot robot = {-1, -1, -1, false};
+Robot robot = {{-1,-1},{-1,-1},{-1,-1}, false}; // La primera {} es para la estructura completa, la segunda para los miembros. SIEMPRE ASI
 
 void mostrar_menu() {
         puts(" ==============================================");
@@ -30,33 +29,57 @@ void mostrar_menu() {
         puts(" ==============================================");
 }
 
+void limpiarBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+int ingresar_y_validar_opcion() {
+    int opcion;
+    int valido = 0;
+
+    do {
+        printf(" Ingrese una opcion: ");
+        
+        if (scanf("%d", &opcion) != 1) {
+            // Entrada inválida
+            limpiarBuffer();  // Limpia el buffer
+            printf("\033[1A"); // Sube una línea
+            printf("\033[K");  // Borra la línea
+            printf("Ingrese una opcion valida: ");
+        } else {
+            limpiarBuffer();  // Limpia el \n restante
+            // Validar rango de opcion aquí
+            if (opcion >= 0 && opcion <= 8) {  
+                valido = 1;
+            } else {
+                printf("\033[1A\033[K"); // Borra línea anterior
+                printf("Ingrese una opcion valida: ");
+            }
+        }
+    } while (!valido);
+
+    return opcion;
+}
 
 int main() {
-
     // Para el encoding en Windows
     #ifdef _WIN32
         SetConsoleOutputCP(CP_UTF8);
     #endif
     
-    // Inicializar la semilla del generador aleatorio
-    srand(time(NULL));
+    srand(time(NULL));    // Inicializar la semilla del generador aleatorio
+ 
+    int iteracion = 1;
+    int opcion_validada = 0;
 
-    int opcion = 0;
-
-    // mostrar_menu();
-    // printf("Ingrese una opcion valida: ");
-    
     do {
-        // limpiarPantalla(); 
-        mostrar_menu();
-        printf("Ingrese una opcion valida: ");
-        if (opcion == 0) {
-            scanf("%d", &opcion);
-        }
-        //limpiarPantalla();   
-        //mostrar_menu();
+        mostrar_menu();       
+        opcion_validada = ingresar_y_validar_opcion();
 
-        switch(opcion) {
+        //limpiarPantalla(); 
+
+        switch(opcion_validada) {
             case 1:
                 opcion_uno();
                 break;
@@ -64,11 +87,7 @@ int main() {
                 opcion_dos();
                 break;
             case 3:
-                if (robot.posicion_actual.x == -1) {
-                    printf("⚠️ \033[33m\033[1m No se puede mostrar mapa. Robot no inicializado.\033[0m\n");
-                } else {
-                    opcion_tres();
-                }
+                opcion_tres();
                 break;
             case 4:
                 opcion_cuatro();
@@ -90,8 +109,7 @@ int main() {
                 puts("Opcion Numero 7!");
                 break;
             case 8:
-                puts("\n\033[1m\033[4mMostrando datos de la matriz...\033[0m\n");
-                imprimir_matriz();
+                opcion_ocho();
                 break;
             case 0:
                 puts("Saliendo del programa... ¡Hasta luego!");
@@ -101,23 +119,25 @@ int main() {
                 break;
         }
 
-        if (opcion != 0) {
-            printf("Ingrese una opcion valida: ");
+        puts("\n \033[35m\033[1m═══════════════════════════════════");
+        printf("    ⏩ Iteracion del menú Nº: %d\n", iteracion);
+        iteracion++;
+        puts(" ═══════════════════════════════════\n\n\033[0m");
+        // if (opcion_validada != 0) {
+        //     // printf("Ingrese una opcion valida: ");
+          
+        //     // scanf("%d", &opcion);
+        //     // //Si el usuario escribió algo no numérico (ej: "abc"), scanf falla, no consume la entrada, y opcion queda sin cambiar.
+        //     // //Esto es la raíz del bucle infinito si no limpias el buffer.
 
-            // FALTA CORREGIR EL "DESFASE" Y EL INGRESE QUE SALE 2 VECES
-            // Usar secuencias de escape ANSI para mover el cursor hacia la línea donde empieza el mensaje de "Ingrese una opción válida: "
-            // Esto depende de dónde se encuentra el mensaje exacto en el terminal.
-            printf("\033[F");  // Mueve el cursor hacia arriba (al inicio de la línea donde se mostró "Ingrese una opcion valida:")
-            // Ahora, podemos borrar todo el contenido de esa línea con espacios o simplemente imprimir en blanco:
+
+        //     // printf("\033[1A\033[2K");  // Sube y borra toda la línea anterior          
             
-            scanf("%d", &opcion);
-            printf("\033[K");  // Borra la línea desde el cursor hasta el final            
-            
+        //     opcion_validada = ingresar_y_validar_opcion();
+        //     //limpiarPantalla(); 
+        // }
 
-            limpiarPantalla(); 
-        }
-
-    } while(opcion != 0);
+    } while(opcion_validada != 0);
     
     
     return 0;

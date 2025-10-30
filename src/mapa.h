@@ -15,13 +15,4 @@ void cargar_matriz();
 void imprimir_matriz();
 void imprimir_mapa_ascii();
 
-// PARA EL ROBOT
-
-
-// Devuelve la posición inicial del robot
-Posicion capturar_posiciones_iniciales_del_robot(void);
-
-// Devuelve la posición de destino del robot
-Posicion obtener_destino_robot(void);
-
 #endif

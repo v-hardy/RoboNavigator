@@ -58,53 +58,32 @@ void cargar_matriz() {
                 }
             }
         }
+        puts("\n\033[32m\033[1m  ✅  Mapa cargado con éxito.\033[0m");
+        
 }
 
 // Función para imprimir la matriz como números
 void imprimir_matriz() {
-    
-    if (robot.posicion_actual.x != -1) {
-        printf("✅  El robot está inicializado y listo para usar.\n");
-    
-        // Marcar la posición actual del robot con un 2
-        matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 2;
-
-        // agregar logica para lo recorrido
-        //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 3;
-
-        // agregar logica para paradas intermedias
-        //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 4;
-
-        // (Opcional) marcar destino con un 5, por ejemplo
-        matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 5;
-    }
-
-    for (int i = 0; i < FILAS; i++) {
-        for (int j = 0; j < COLUMNAS; j++) {
-            printf("%d ", matriz[i][j]);
+    bool vacia = matriz_vacia(matriz);
+    if (!vacia) { 
+    // si la matriz esta vacia, deberia avisar y no imprimir
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                if ( j == 0 ) {
+                    printf("  ");
+                }
+                printf("%d ", matriz[i][j]);
+            }
+            printf("\n");
         }
-        printf("\n");
-    }
-
-    if (robot.posicion_actual.x == -1) {
-        printf("⚠️  El robot no ha sido inicializado.\n");
+    } else {
+        puts("  \033[33m\033[1m⚠️  Debe cargar el mapa antes.\033[0m\n");
     }
 }
 
 // Función para imprimir la matriz como mapa ASCII
 void imprimir_mapa_ascii() {
-    // Marcar la posición actual del robot con un 2
-    matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 2;
-
-    // agregar logica para lo recorrido
-    //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 3;
-
-    // agregar logica para paradas intermedias
-    //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 4;
-
-    // (Opcional) marcar destino con un 5, por ejemplo
-    matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 5;
-    puts("\n");
+    puts("\n\033[1m  🗺️  Generando Mapa...\033[0m\n");
     for (int i = 0; i < FILAS; i++) {
         printf("  ");
         if (i == 0) {
@@ -142,34 +121,3 @@ void imprimir_mapa_ascii() {
     }
 }
 
-Posicion capturar_posiciones_iniciales_del_robot(void) {
-    Posicion p;
-    do {
-        printf("Ingrese la posición inicial del robot (x y): ");
-        scanf("%d %d", &p.x, &p.y);
-        // Restamos 1 a las coordenadas ingresadas
-        p.x -= 1;
-        p.y -= 1;
-        if (p.x < 0 || p.x >= FILAS || p.y < 0 || p.y >= COLUMNAS) {
-            printf("¡Error! Las coordenadas están fuera de los límites del mapa.\n");
-        }
-    } while (p.x < 0 || p.x >= FILAS || p.y < 0 || p.y >= COLUMNAS);  // Validar que esté dentro del rango
-    
-    matriz[p.x][p.y] = 2;  // Marcar el robot en la matriz
-    return p;
-}
-
-Posicion obtener_destino_robot(void) {
-    Posicion p;
-    do {
-        printf("Ingrese la posición destino del robot (x y): ");
-        scanf("%d %d", &p.x, &p.y);
-        // Restamos 1 a las coordenadas ingresadas
-        p.x -= 1;
-        p.y -= 1;
-        if (p.x < 0 || p.x >= FILAS || p.y < 0 || p.y >= COLUMNAS) {
-            printf("¡Error! Las coordenadas están fuera de los límites del mapa.\n");
-        }
-    } while (p.x < 0 || p.x >= FILAS || p.y < 0 || p.y >= COLUMNAS);  // Validar que esté dentro del rango
-    return p;
-}

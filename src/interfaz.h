@@ -8,6 +8,7 @@ void opcion_dos();
 void opcion_tres();
 void opcion_cuatro();
 void opcion_cinco();
-void limpiarPantalla();
+void opcion_ocho();
+void limpiarPantalla(void);
 
 #endif
