@@ -1,5 +1,5 @@
 #include "robot.h"
-#include "mapa.h"   // 👈 necesario para capturar_posiciones_iniciales_del_robot() y obtener_robot.posicion_destino.robot()
+#include "mapa.h"   
 #include <stdio.h>
 
 extern Robot robot;
@@ -173,20 +173,26 @@ int prioridad_de_sentido() {
 
 Delta calcular_modulos_sentidos() {
     Delta delta;
-    if (robot.posicion_destino.x >= robot.posicion_actual.x) {
+    if (robot.posicion_destino.x > robot.posicion_actual.x) {
         delta.sentido_abscisa = POSITIVO;
         delta.abscisa = robot.posicion_destino.x - robot.posicion_actual.x;
-    } else if (robot.posicion_destino.x > robot.posicion_actual.x) {
+    } else if (robot.posicion_destino.x == robot.posicion_actual.x) {
+        delta.sentido_abscisa = CERO;
+        delta.abscisa = 0; // deberia dar 0
+    } else if (robot.posicion_destino.x < robot.posicion_actual.x) {
         delta.sentido_abscisa = NEGATIVO;
         delta.abscisa = robot.posicion_actual.x - robot.posicion_destino.x;
-    }
+    } 
 
-    if (robot.posicion_destino.y >= robot.posicion_actual.y) {
+    if (robot.posicion_destino.y > robot.posicion_actual.y) {
         delta.sentido_ordenada = POSITIVO;
-        delta.abscisa = robot.posicion_destino.y - robot.posicion_actual.y;
-    } else if (robot.posicion_destino.y > robot.posicion_actual.y) {
+        delta.ordenada = robot.posicion_destino.y - robot.posicion_actual.y;
+    } else if (robot.posicion_destino.y == robot.posicion_actual.y) {
+        delta.sentido_ordenada = CERO;
+        delta.ordenada = 0; // deberia dar 0
+    } else if (robot.posicion_destino.y < robot.posicion_actual.y) {
         delta.sentido_ordenada = NEGATIVO;
-        delta.abscisa = robot.posicion_actual.y - robot.posicion_destino.y;
+        delta.ordenada = robot.posicion_actual.y - robot.posicion_destino.y;
     }
     return delta;
 }
@@ -197,23 +203,23 @@ void movimiento(Desplazamiento desplazar){
     if (desplazar.arriba == 1 && desplazar.derecha == 0 && desplazar.abajo == 0 && desplazar.izquierda == 0) {
         // Acción cuando desplazar es {1, 0, 0, 0}
         matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 3;
-        printf("Movimiento hacia arriba.\n");
+        printf("\n  🤖 El robot se movio hacia arriba.");
         robot.posicion_actual.x--;
     } else if (desplazar.arriba == 0 && desplazar.derecha == 2 && desplazar.abajo == 0 && desplazar.izquierda == 0) {
         // Acción cuando desplazar es {0, 2, 0, 0}
         matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 3;
-        printf("Movimiento hacia la derecha.\n");
+        printf("\n  🤖 El robot se movio  hacia la derecha.");
         robot.posicion_actual.y++;
     } else if (desplazar.arriba == 0 && desplazar.derecha == 0 && desplazar.abajo == 4 && desplazar.izquierda == 0) {
         // Acción cuando desplazar es {0, 0, 4, 0}
         matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 3;
-        printf("Movimiento hacia la abajo.\n");
+        printf("\n  🤖 El robot se movio  hacia la abajo.");
         robot.posicion_actual.x++;
     } else if (desplazar.arriba == 0 && desplazar.derecha == 0 && desplazar.abajo == 0 && desplazar.izquierda == 8) {
         // Acción cuando desplazar es {0, 0, 0, 8}
         matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 3;
-        printf("Movimiento hacia la izquierda.\n");
-        robot.posicion_actual.x--;
+        printf("\n  🤖 El robot se movio hacia la izquierda.");
+        robot.posicion_actual.y--;
     }
 }
 
@@ -240,219 +246,186 @@ void mover_robot() {
         movimiento(desplazar);
     } else if (obstaculos == 13) {
         printf("\nPuede VOLVER hacia derecha.");
-        desplazar.izquierda = 2;
+        desplazar.derecha = 2;
         movimiento(desplazar);
     }               // CAMINOS SIN SALIDA --> REGISTRAR EN LISTA DE CAMINOS SIN SALIDA
     //FIN DE LOGICA PARA VOLVER
 
     //ELECCION INTELIGENTE SEGUN POSICION COSMO(VERDE) O WANDA(ROSA)
-    
-    //LAS POSICIONES COSMO ESTAN OCUPADAS? SI SOLO 1 (UNA) --> AVANZO POR COSMO X O Y
-    // SEGUN EL SENTIDO DE PRIORIDAD DETERMINO CUADRANTES A ANALIZAR
-    // EJEMPLO SI -SE-> CUANDO LA SUMA DE OBSTACULOS ROBOT(X,Y+1) Y  ROBOT(X+1,Y) == SE * 2 + SE div 2
-    // Combinaciones con 2 obstáculos  = 2 movimientos posibles // deberia escoger el camino mas conveniente segun prioridad de sentido
-    
-        Delta delta = {0, 0, POSITIVO, POSITIVO};
-        delta = calcular_modulos_sentidos();
 
+    Delta delta = {0, 0, POSITIVO, POSITIVO};
+    delta = calcular_modulos_sentidos();
 
-    if (direccion ==  1) { //PUNTO CARDINAL N (norte)
-        if ((obstaculos % 2) != 1 ) {
-            printf("\nAccionar movimiento hacia arriba.");
-            desplazar.arriba = 1;
-            movimiento(desplazar);
-        } else if (obstaculos == 3) {
-            printf("\nAccionar movimiento hacia izquierda.");
-            desplazar.izquierda = 8;
-            movimiento(desplazar);
-        } else if (obstaculos == 9) {
-            printf("\nAccionar movimiento hacia derecha.");
-            desplazar.derecha = 2;
-            movimiento(desplazar);
-        }
-    } else if (direccion == 2) {
-        //PUNTO INTERCARDINAL ¿hace falta un calculo del modulo aca??
-        // analizo obstaculos en 1 y 2 -- 
-        
-        
+    printf("\n Modulos calculados: %d, %d; Sentidos: %d, %d \n", delta.abscisa, delta.ordenada, delta.sentido_abscisa, delta.sentido_ordenada);
+    if ( 1 == 0 ) {
+        ;
 
-
-        if (delta.abscisa >= delta.ordenada) {
+    } else {
+    // SE MUEVE POR EJE X POR SE MAYOR QUE VALOR DELTA.Y
+        if (delta.abscisa > delta.ordenada) {
             // debe x++ o x-- hasta chocar con un obstaculo
             if (delta.sentido_abscisa == POSITIVO)
-                if (robot.posicion_actual.x+1 != 1){
+                if (matriz[robot.posicion_actual.x+1][robot.posicion_actual.y] != 1){
                     printf("\nAccionar movimiento hacia abajo.");
                     desplazar.abajo = 4;
                     movimiento(desplazar);
-                } 
-            if (delta.sentido_abscisa == NEGATIVO) {
-                if (robot.posicion_actual.x-1 != 1) {
-                    printf("\nAccionar movimiento hacia arriba.");
-                    desplazar.arriba = 1;
-                    movimiento(desplazar);
+                } else{
+
+                    if (obstaculos == 6) {
+                        printf("\nAccionar movimiento hacia izquierda.");
+                        desplazar.izquierda = 8;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 12) {
+                        printf("\nAccionar movimiento hacia derecha.");
+                        desplazar.derecha = 2;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 4 || obstaculos == 5) {
+                        printf("\nAccionar movimiento hacia derecha PREDEFINIDO.");
+                        desplazar.derecha = 2;
+                        movimiento(desplazar);
+                    }
+
                 }
-            }
-        } else if (delta.abscisa < delta.ordenada) {
-            // debe  y++ o y--
-            if (delta.sentido_ordenada == POSITIVO) {
-                if (robot.posicion_actual.y+1 != 1){
+            //PRUEBA
+            if (delta.sentido_abscisa == CERO) {
+                
+                if (matriz[robot.posicion_actual.x][robot.posicion_actual.y+1] != 1) {
                     printf("\nAccionar movimiento hacia derecha.");
                     desplazar.derecha = 2;
                     movimiento(desplazar);
+                
+                } else {
+    //PRUEBA
+                    if (obstaculos == 3) {
+                        printf("\nAccionar movimiento hacia izquierda.");
+                        desplazar.izquierda = 8;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 9) {
+                        printf("\nAccionar movimiento hacia derecha.");
+                        desplazar.derecha = 2;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 3) {
+                        printf("\nAccionar movimiento hacia izquierda PREDEFINIDO.");
+                        desplazar.izquierda = 8;
+                        movimiento(desplazar);
+                    } 
+
                 }
-            }
-            if (delta.sentido_ordenada == NEGATIVO) {
-                if (robot.posicion_actual.y-1 != 1){
-                    printf("\nAccionar movimiento hacia izquierda.");
-                    desplazar.izquierda = 8;
-                    movimiento(desplazar);
-                }
-        
-            }
-        }
 
-
-    } else if (direccion == 4) { //PUNTO CARDINAL E (este)
-        if (obstaculos != 2 && obstaculos != 3 && obstaculos != 6 ) {
-            printf("\nAccionar movimiento hacia derecha.");
-            desplazar.derecha = 2;
-            movimiento(desplazar);
-        } else if (obstaculos == 3) {
-            printf("\nAccionar movimiento hacia abajo.");
-            desplazar.abajo = 4;
-            movimiento(desplazar);
-        } else if (obstaculos == 6) {
-            printf("\nAccionar movimiento hacia arriba.");
-            desplazar.arriba = 1;
-            movimiento(desplazar);
-        } else if (obstaculos == 2) {
-
-            // USUARIO ELIGE MOVIMIENTO POR AHORA
-            int eleccion = 0;
-            printf("Ingrese hacia donde mover: ");
-            if ((scanf("%d", &eleccion)) != 2) {
-                fprintf(stderr, "Error de entrada.\n");
-                return;  // O lo que sea necesario en caso de error
-            }
-            if (eleccion == 4) {
-                printf("\nAccionar movimiento hacia abajo.");
-                desplazar.abajo = 4;
-                movimiento(desplazar);
-            } else if (eleccion == 1) {
-                printf("\nAccionar movimiento hacia arriba.");
-                desplazar.arriba = 1;
-                movimiento(desplazar);
             }
 
-        }
-    } else if (direccion == 8) {
-        if (delta.abscisa >= delta.ordenada) {
-            // debe x++ o x-- hasta chocar con un obstaculo
-            if (delta.sentido_abscisa == POSITIVO)
-                if (robot.posicion_actual.x+1 != 1){
-                    printf("\nAccionar movimiento hacia abajo.");
-                    desplazar.abajo = 4;
-                    movimiento(desplazar);
-                } 
+
             if (delta.sentido_abscisa == NEGATIVO) {
-                if (robot.posicion_actual.x-1 != 1) {
+                if (matriz[robot.posicion_actual.x-1][robot.posicion_actual.y] != 1) {
                     printf("\nAccionar movimiento hacia arriba.");
                     desplazar.arriba = 1;
                     movimiento(desplazar);
+                } else {
+
+                    if (obstaculos == 3) {
+                        printf("\nAccionar movimiento hacia izquierda.");
+                        desplazar.izquierda = 8;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 9) {
+                        printf("\nAccionar movimiento hacia derecha.");
+                        desplazar.derecha = 2;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 3) {
+                        printf("\nAccionar movimiento hacia izquierda PREDEFINIDO.");
+                        desplazar.izquierda = 8;
+                        movimiento(desplazar);
+                    } 
+
                 }
             }
-        } else if (delta.abscisa < delta.ordenada) {
+        
+    // SE MUEVE POR EJE Y POR SE MAYOR QUE VALOR DELTA.X
+        } else if (delta.abscisa <= delta.ordenada) {
             // debe  y++ o y--
             if (delta.sentido_ordenada == POSITIVO) {
-                if (robot.posicion_actual.y+1 != 1){
+                
+                if (matriz[robot.posicion_actual.x][robot.posicion_actual.y+1] != 1){
                     printf("\nAccionar movimiento hacia derecha.");
                     desplazar.derecha = 2;
                     movimiento(desplazar);
+                } else {
+
+                    if (obstaculos == 3) {
+                        printf("\nAccionar movimiento hacia abajo.");
+                        desplazar.abajo = 4;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 6) {
+                        printf("\nAccionar movimiento hacia arriba.");
+                        desplazar.arriba = 1;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 2 || obstaculos == 10 ) {
+
+                        if (delta.sentido_abscisa == POSITIVO) {
+                            printf("\nAccionar movimiento hacia abajo.");
+                            desplazar.abajo = 4;
+                            movimiento(desplazar);
+                        } else if (delta.sentido_abscisa == NEGATIVO) {
+                            printf("\nAccionar movimiento hacia arriba.");
+                            desplazar.arriba = 1;
+                            movimiento(desplazar);
+                        } else if (delta.sentido_abscisa == CERO) {
+                            if (matriz[robot.posicion_actual.x-1][robot.posicion_actual.y] == 3){
+                                printf("\nAccionar movimiento hacia abajo.");
+                                desplazar.abajo = 4;
+                                movimiento(desplazar);
+                            } else if (matriz[robot.posicion_actual.x+1][robot.posicion_actual.y] == 3){
+                                printf("\nAccionar movimiento hacia arriba.");
+                                desplazar.arriba = 1;
+                                movimiento(desplazar);
+                            }
+                        }
+
+                    }
                 }
             }
+            
+            if (delta.sentido_ordenada == CERO) { // NO TOMA CERO PORQUE LA  FUNCION QUE CALCULA EL DELTA NO ASIGNA CERO, HABRIA QUE TOMAR EL VALOR QUE SI QUEDA EN 0
+            
+                if(obstaculos == 0){
+                    printf("\nAccionar movimiento hacia derecha.");
+                    desplazar.derecha = 2;
+                    movimiento(desplazar);
+                }// ESTO HABRIA QUE AGREGAR A LOS OTROS CASOS
+
+            }
+            
             if (delta.sentido_ordenada == NEGATIVO) {
-                if (robot.posicion_actual.y-1 != 1) {
+                if (matriz[robot.posicion_actual.x][robot.posicion_actual.y-1] != 1){
                     printf("\nAccionar movimiento hacia izquierda.");
                     desplazar.izquierda = 8;
                     movimiento(desplazar);
-                }
+                } else {
+
+                    if (obstaculos == 9) {
+                        printf("\nAccionar movimiento hacia abajo.");
+                        desplazar.abajo = 4;
+                        movimiento(desplazar);
+                    } else if (obstaculos == 12) {
+                        printf("\nAccionar movimiento hacia arriba.");
+                        desplazar.arriba = 1;
+                        movimiento(desplazar);
+                    } if (obstaculos == 8) {
+                        printf("\nAccionar movimiento hacia arriba PREDEFINIDO.");
+                        desplazar.arriba = 1;
+                        movimiento(desplazar);
+                    }
+
+                }       
+            }
+
         
-            }
-        }
-
-    } else if (direccion == 16) { //PUNTO CARDINAL S (sur)
-        if (obstaculos != 4 && obstaculos != 6 && obstaculos != 12 ) {
-            printf("\nAccionar movimiento hacia abajo.");
-            desplazar.abajo = 4;
-            movimiento(desplazar);
-        } else if (obstaculos == 6) {
-            printf("\nAccionar movimiento hacia izquierda.");
-            desplazar.izquierda = 8;
-            movimiento(desplazar);
-        } else if (obstaculos == 12) {
-            printf("\nAccionar movimiento hacia derecha.");
-            desplazar.derecha = 2;
-            movimiento(desplazar);
-        } else if (obstaculos == 4) {
-            
-            // USUARIO ELIGE MOVIMIENTO POR AHORA
-            int eleccion = 0;
-            printf("Ingrese hacia donde mover: ");
-            if ((scanf("%d", &eleccion)) != 2) {
-                fprintf(stderr, "Error de entrada.\n");
-                return;  // O lo que sea necesario en caso de error
-            }
-            if (eleccion == 2) {
-                printf("\nAccionar movimiento hacia derecha.");
-                desplazar.derecha = 2;
-                movimiento(desplazar);
-            } else if (eleccion == 8) {
-                printf("\nAccionar movimiento hacia izquierda.");
-                desplazar.izquierda = 8;
-                movimiento(desplazar);
-            }
-
-        }
-    } else if (direccion == 32) {
-        //PUNTO INTERCARDINAL
-        ;
-    } else if (direccion == 64) { //PUNTO CARDINAL O (oeste)
-        if (obstaculos != 8 && obstaculos != 9 && obstaculos != 12 ) {
-            printf("\nAccionar movimiento hacia derecha.");
-            desplazar.derecha = 2;
-            movimiento(desplazar);
-        } else if (obstaculos == 9) {
-            printf("\nAccionar movimiento hacia abajo.");
-            desplazar.abajo = 4;
-            movimiento(desplazar);
-        } else if (obstaculos == 12) {
-            printf("\nAccionar movimiento hacia arriba.");
-            desplazar.arriba = 1;
-            movimiento(desplazar);
-        } if (obstaculos == 4) {
-            
-            // USUARIO ELIGE MOVIMIENTO POR AHORA
-            int eleccion = 0;
-            printf("Ingrese hacia donde mover: ");
-            if ((scanf("%d", &eleccion)) != 2) {
-                fprintf(stderr, "Error de entrada.\n");
-                return;  // O lo que sea necesario en caso de error
-            }
-            if (eleccion == 4) {
-                printf("\nAccionar movimiento hacia abajo.");
-                desplazar.abajo = 4;
-                movimiento(desplazar);
-            } else if (eleccion == 1) {
-                printf("\nAccionar movimiento hacia arriba.");
-                desplazar.arriba = 1;
-                movimiento(desplazar);
-            }
-
-        }
-    } else if (direccion == 128) {
-        //PUNTO INTERCARDINAL
-        ;
+        } 
     }
+
+    printf("  \nDesplazamiendo: %d %d %d %d", desplazar.arriba, desplazar.derecha, desplazar.abajo, desplazar.izquierda);
+    // SE MUEVE POR EJE X POR SI VALOR DELTA.Y ES CERO 
+
+    // SE MUEVE POR EJE Y POR SI VALOR DELTA.X ES CERO 
 
     if (obstaculos == 3) {
         printf("\nPuede moverse hacia abajo o hacia la izquierda.");
@@ -471,7 +444,6 @@ void mover_robot() {
 
     } else if (obstaculos == 12) {
         printf("\nPuede moverse hacia arriba o hacia la derecha.");
-
     } 
     // Combinaciones con 1 obstáculo =  = 3 movimientos posibles
     else if (obstaculos == 1) {
@@ -486,83 +458,7 @@ void mover_robot() {
     // Caso sin obstáculos = 4 movimientos posibles
     else {
         printf("\nNo hay obstáculos, puede moverse en todas las direcciones.");
-              
-        //calcular_modulos_sentidos();
-
-        
     }
-
-        if (delta.abscisa >= delta.ordenada) {
-            // debe x++ o x-- hasta chocar con un obstaculo
-            if (delta.sentido_abscisa == POSITIVO) {
-
-                if (robot.posicion_actual.x+1 != 1){
-                    printf("\nAccionar movimiento hacia abajo.");
-                    desplazar.abajo = 4;
-                    movimiento(desplazar);
-                } 
-            }
-            if (delta.sentido_abscisa == NEGATIVO) {
-
-                if (robot.posicion_actual.x-1 != 1) {
-                    printf("\nAccionar movimiento hacia arriba.");
-                    desplazar.arriba = 1;
-                    movimiento(desplazar);
-                }
-            }
-        } else if (delta.abscisa < delta.ordenada) {
-            // debe  y++ o y--
-            if (delta.sentido_ordenada == POSITIVO) {
-                if (robot.posicion_actual.y+1 != 1) {
-                    printf("\nAccionar movimiento hacia derecha.");
-                    desplazar.derecha = 2;
-                    movimiento(desplazar);
-                }
-            }
-            if (delta.sentido_ordenada == NEGATIVO) {
-                if (robot.posicion_actual.y-1 != 1) {
-                    printf("\nAccionar movimiento hacia izquierda.");
-                    desplazar.izquierda = 8;
-                    movimiento(desplazar);
-                }
-        
-            }
-        }
-
-    // else if (obstaculos == 3) {
-    //     printf("\nPuede moverse hacia abajo o hacia la izquierda.");
-
-    // } else if (obstaculos == 5) {
-    //     printf("\nPuede moverse hacia la derecha o hacia la izquierda.");
-
-    // } else if (obstaculos == 6) {
-    //     printf("\nPuede moverse hacia arriba o hacia abajo.");
-
-    // } else if (obstaculos == 9) {
-    //     printf("\nPuede moverse hacia la derecha o hacia abajo.");
-
-    // } else if (obstaculos == 10) {
-    //     printf("\nPuede moverse hacia arriba o hacia la izquierda.");
-
-    // } else if (obstaculos == 12) {
-    //     printf("\nPuede moverse hacia arriba o hacia la derecha.");
-
-    // } 
-    // // Combinaciones con 1 obstáculo =  = 3 movimientos posibles
-    // else if (obstaculos == 1) {
-    //     printf("\nPuede moverse hacia abajo, hacia la derecha o hacia la izquierda.");
-    // } else if (obstaculos == 2) {
-    //     printf("\nPuede moverse hacia arriba, hacia abajo o hacia la izquierda.");
-    // } else if (obstaculos == 4) {
-    //     printf("\nPuede moverse hacia arriba, hacia la derecha o hacia la izquierda.");
-    // } else if (obstaculos == 8) {
-    //     printf("\nPuede moverse hacia arriba, hacia la derecha o hacia abajo.");
-    // } 
-    // // Caso sin obstáculos = 4 movimientos posibles
-    // else {
-    //     printf("\nNo hay obstáculos, puede moverse en todas las direcciones.");
-    // }
-    //ELECCION INTELIGENTE SEGUN POSICION COSMO(VERDE) O WANDA(ROSA)
 
     robot.ha_llegado = robot_ha_llegado();
 }
@@ -597,7 +493,9 @@ void imprimir_rastro_del_robot() {
             //matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 4;
 
             // Marcar la posicion destino del robot con un 5
-            matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 5;
+            if (robot.posicion_actual.x == robot.posicion_inicial.x && robot.posicion_actual.y == robot.posicion_inicial.y) {
+                matriz[robot.posicion_destino.x][robot.posicion_destino.y] = 5;
+            }
             // Marcar la posición actual del robot con un 2
             matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 2;
         }

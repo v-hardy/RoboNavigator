@@ -9,6 +9,7 @@ typedef struct {
 // LO USAMOS PARA LOS DELTAs DE FILA Y COLUMNA
 typedef enum {
     NEGATIVO = -1,
+    CERO = 0,
     POSITIVO = 1
 } Sentido;
 

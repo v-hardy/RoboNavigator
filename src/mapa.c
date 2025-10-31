@@ -9,8 +9,6 @@
 // ✅ Aquí sí definimos la matriz global
 int matriz[FILAS][COLUMNAS] = {0};
 
-int direcciones[5][2];
-
 int mapa1[20][20] = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
     {1,0,0,0,1,0,1,1,1,1,1,0,1,0,0,0,0,0,1,1},
@@ -48,17 +46,27 @@ bool matriz_vacia(int matriz[FILAS][COLUMNAS]) {
 }
 // Función para rellenar la matriz con 0 y 1
 void cargar_matriz() {
-    // ACA SE DEBERIA REEMPLAZAR POR MAPAS DEFINIDOS
-        bool vacia = matriz_vacia(matriz);
-        if (vacia) {   
-            for (int i = 0; i < FILAS; i++) {
-                for (int j = 0; j < COLUMNAS; j++) {
-                    // 20% de probabilidad de obstáculo (1), resto vacío (0)
-                    matriz[i][j] = (rand() % 100 < 20) ? 1 : 0;
-                }
+
+    bool mapa_vacio = matriz_vacia(mapa1);
+    if (!mapa_vacio) {
+    // Copiar los valores de mapa1 a matriz usando un bucle
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                matriz[i][j] = mapa1[i][j];
             }
         }
-        puts("\n\033[32m\033[1m  ✅  Mapa cargado con éxito.\033[0m");
+    }
+    // POR SI NO EXISTE MAPA DEFINIDO, GENERA UNO ALEATORIO
+    bool vacia = matriz_vacia(matriz);
+    if (vacia) {   
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                // 20% de probabilidad de obstáculo (1), resto vacío (0)
+                matriz[i][j] = (rand() % 100 < 20) ? 1 : 0;
+            }
+        }
+    }
+    puts("\n\033[32m\033[1m  ✅  Mapa cargado con éxito.\033[0m");
         
 }
 

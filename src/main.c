@@ -77,7 +77,7 @@ int main() {
         mostrar_menu();       
         opcion_validada = ingresar_y_validar_opcion();
 
-        //limpiarPantalla(); 
+        limpiarPantalla(); 
 
         switch(opcion_validada) {
             case 1:
