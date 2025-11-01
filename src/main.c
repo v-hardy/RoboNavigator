@@ -20,7 +20,7 @@ void mostrar_menu() {
         puts("  1.- Cargar mapa actual");
         puts("  2.- Establecer coordenadas del robot");
         puts("  3.- Mostrar Mapa+Robot ASCII ");
-        puts("  4.- Planificar ruta hacia el destino");
+        puts("  4.- Planificar ruta más corta hacia el destino");
         puts("  5.- Mover robot hacia el destino");
         puts("  6.- Mostrar ruta calculada");
         puts("  7.- Reconfigurar mapa (resetear obstáculos)");
@@ -93,20 +93,14 @@ int main() {
                 opcion_cuatro();
                 break;
             case 5:
-                if (robot.ha_llegado == 1) {
-                    printf("⚠️ \033[33m\033[1m el Robot ya se encuentra en el destino.\033[0m\n");
-                } else {
-                    // LUEGO DE OBTENER LA LISTA CON EL RECORRIDO OPTIMO QUE HARIA EL ROBOT
-                    // ESTA FUNCION DEBERIA ESTAR DENTRO DE UNA ITERACION CON SLEEP PARA 
-                    // SIMUMULAR EL MOVIMIENTO...
-                    opcion_cinco();
-                }
+                opcion_cinco();   
                 break;
             case 6:
                 puts("Opcion Numero 6!");
                 break;
             case 7:
                 puts("Opcion Numero 7!");
+                opcion_siete();
                 break;
             case 8:
                 opcion_ocho();

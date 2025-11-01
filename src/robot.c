@@ -4,45 +4,71 @@
 
 extern Robot robot;
 
+// ====== FUNCIÓN: Capturar posición inicial (con todas las validaciones) ======
 Posicion capturar_posiciones_iniciales_del_robot() {
     Posicion p;
     do {
-        printf("  Ingrese la posición inicial del robot (x y): ");
+        printf("  Ingrese la posicion inicial del robot (x y): ");
         if (scanf("%d %d", &p.x, &p.y) != 2) {
-            fprintf(stderr, "Error de entrada.\n");
-            p.x = -1;  // Indicar un valor inválido
-            p.y = -1;  // Indicar un valor inválido
-            return p;  // Devolver la posición inválida
+            fprintf(stderr, "  \033[1m\033[31m¡Error! Entrada invalida. Use numeros.\033[0m");
+            while (getchar() != '\n');  // limpiar buffer
+            p.x = p.y = -1;
+            continue;
         }
-        // Restamos 1 a las coordenadas ingresadas
-        p.x -= 1;
+
+        p.x -= 1;  
         p.y -= 1;
+
+        // Validar rango
         if (p.x < 0 || p.x >= FILAS || p.y < 0 || p.y >= COLUMNAS) {
-            puts("  \033[1m\033[31m¡Error! Las coordenadas están fuera de los límites del mapa.\033[0m\n");
+            printf("  \033[1m\033[31m¡Error! Coordenadas fuera del mapa (1-%d, 1-%d).\033[0m\n", FILAS, COLUMNAS);
+            continue;
         }
-    } while (p.x < 0 || p.x >= FILAS || p.y < 0 || p.y >= COLUMNAS);  // Validar que esté dentro del rango
-    
-    matriz[p.x][p.y] = 2;  // Marcar el robot en la matriz
+
+        // Validar que no sea pared
+        if (matriz[p.x][p.y] != 0) {
+            puts("  \033[1m\033[31m¡Error! No puedes colocar el robot en una pared.\033[0m");
+            continue;
+        }
+
+        break;  // Todo válido
+    } while (1);
+
+    matriz[p.x][p.y] = 2;  // Marco robot
     return p;
 }
 
+// ====== FUNCIÓN: Capturar destino (con todas las validaciones) ======
 Posicion obtener_destino_robot() {
     Posicion p;
     do {
-        printf("  Ingrese la posición destino del robot (x y): ");
+        printf("  Ingrese la posicion destino del robot (x y): ");
         if (scanf("%d %d", &p.x, &p.y) != 2) {
-            fprintf(stderr, "Error de entrada.\n");
-            p.x = -1;  // Indicar un valor inválido
-            p.y = -1;  // Indicar un valor inválido
-            return p;  // Devolver la posición inválida
+            fprintf(stderr, "  \033[1m\033[31m¡Error! Entrada invalida. Use numeros.\033[0m\n");
+            while (getchar() != '\n');
+            p.x = p.y = -1;
+            continue;
         }
-        // Restamos 1 a las coordenadas ingresadas
+
         p.x -= 1;
         p.y -= 1;
+
+        // Validar rango
         if (p.x < 0 || p.x >= FILAS || p.y < 0 || p.y >= COLUMNAS) {
-            puts("  \033[1m\033[31m¡Error! Las coordenadas están fuera de los límites del mapa.\033[0m\n");
+            printf("  \033[1m\033[31m¡Error! Coordenadas fuera del mapa (1-%d, 1-%d).\033[0m\n", FILAS, COLUMNAS);
+            continue;
         }
-    } while (p.x < 0 || p.x >= FILAS || p.y < 0 || p.y >= COLUMNAS);  // Validar que esté dentro del rango
+
+        // Validar que no sea pared
+        if (matriz[p.x][p.y] != 0) {
+            puts("  \033[1m\033[31m¡Error! El destino no puede estar en una pared.\033[0m");
+            continue;
+        }
+
+        break;
+    } while (1);
+
+    matriz[p.x][p.y] = 5;  // Marco destino 
     return p;
 }
 

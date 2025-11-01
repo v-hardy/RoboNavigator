@@ -95,6 +95,7 @@ void imprimir_mapa_ascii() {
     for (int i = 0; i < FILAS; i++) {
         printf("  ");
         if (i == 0) {
+            printf("    ");
             for (int j = 0; j < COLUMNAS; j++) {
                 if (j < 9) {
                 printf("0%d  ", j+1 );
@@ -108,6 +109,7 @@ void imprimir_mapa_ascii() {
                 }
             }
         } 
+        printf("%2d |", i + 1);
         for (int j = 0; j < COLUMNAS; j++) {
             if (matriz[i][j] == 1) {
                 printf("██");  // Obstáculo
