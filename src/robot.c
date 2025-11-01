@@ -4,7 +4,7 @@
 
 extern Robot robot;
 
-// ====== FUNCIÓN: Capturar posición inicial (con todas las validaciones) ======
+// Captura posición inicial
 Posicion capturar_posiciones_iniciales_del_robot() {
     Posicion p;
     do {
@@ -38,8 +38,8 @@ Posicion capturar_posiciones_iniciales_del_robot() {
     return p;
 }
 
-// ====== FUNCIÓN: Capturar destino (con todas las validaciones) ======
-Posicion obtener_destino_robot() {
+// Captura posición destino 
+Posicion capturar_posiciones_destino_del_robot() {
     Posicion p;
     do {
         printf("  Ingrese la posicion destino del robot (x y): ");
@@ -77,7 +77,7 @@ void inicializar_robot() {
     puts("\033[1m\n  RECUERDE: Para establecer coordenadas, el valor de \n  la posicion osila de 1 a 20, en X e Y.\033[0m\n");
     robot.posicion_inicial = capturar_posiciones_iniciales_del_robot();
     robot.posicion_actual = robot.posicion_inicial;
-    robot.posicion_destino = obtener_destino_robot();
+    robot.posicion_destino = capturar_posiciones_destino_del_robot();
     robot.ha_llegado = false;
 }
 

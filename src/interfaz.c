@@ -1,6 +1,7 @@
 #include "mapa.h"
 #include "robot.h"
 #include "interfaz.h"
+#include "camino.h"
 #include "stdio.h"
 #include "stdlib.h"
 
@@ -14,9 +15,9 @@ void opcion_uno() {
       imprimir_mapa_ascii();
       
     } else {
-    puts("\n  🗺️  El mapa ya fue cargado previamente.​");
-    //PODEMOS PREGUNTAR SI DESEA MOSTRARLO
-    imprimir_mapa_ascii();
+    puts("\n\033[1m  🗺️  El mapa ya fue cargado previamente.​\033[0m");
+    //PODEMOS PREGUNTAR SI DESEA CAMBIARLO
+    //imprimir_mapa_ascii();
   }
 }
 
@@ -93,5 +94,6 @@ void limpiarPantalla(void) {
 }
 
 void opcion_siete(){
-  
+    borrar_rastros_del_mapa();
+    // hay que restablecer al bicho tmb
 }

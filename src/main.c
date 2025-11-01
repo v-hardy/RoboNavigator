@@ -99,7 +99,6 @@ int main() {
                 puts("Opcion Numero 6!");
                 break;
             case 7:
-                puts("Opcion Numero 7!");
                 opcion_siete();
                 break;
             case 8:

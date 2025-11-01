@@ -111,8 +111,8 @@ int mostrar_camino(int xInicio, int yInicio, int xFin, int yFin) {
     }
 
 
-    int inicio = indiceNodo[xInicio][yInicio];
-    int fin    = indiceNodo[xFin][yFin];
+    int inicio = indiceNodo[xInicio][yInicio]; //posicion inicial
+    int fin    = indiceNodo[xFin][yFin]; //posicion destino
    
     int padre[MAX_NODOS];
     if (bfs(inicio, fin, padre)) {

@@ -70,6 +70,16 @@ void cargar_matriz() {
         
 }
 
+void borrar_rastros_del_mapa() {
+    for (int i = 0; i < FILAS; i++) {
+        for (int j = 0; j < COLUMNAS; j++) {
+            if (matriz[i][j] != 1) {
+                matriz[i][j] = 0;
+            }
+        }
+}
+}
+
 // Función para imprimir la matriz como números
 void imprimir_matriz() {
     bool vacia = matriz_vacia(matriz);

@@ -43,6 +43,6 @@ void imprimir_rastro_del_robot();
 Posicion capturar_posiciones_iniciales_del_robot();
 
 // Devuelve la posición de destino del robot
-Posicion obtener_destino_robot();
+Posicion capturar_posiciones_destino_del_robot();
 
 #endif
