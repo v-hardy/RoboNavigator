@@ -3,18 +3,23 @@
 #include "mapa.h" 
 #include "camino.h" 
 
-// ======== VARIABLES GLOBALES =========
-extern int mapa1[20][20];
+// ======== VARIABLES  =========
+//extern int mapas2[FILAS][COLUMNAS];
+
 
 Nodo grafo[MAX_NODOS];
 int indiceNodo[FILAS][COLUMNAS];
 int totalNodos = 0;
-const int movX[4] = {0, 1, 0, -1};  // derecha, abajo, izquierda, arriba
+
+// Sera usado para encontrar vecinos del nodo...
+// derecha, abajo, izquierda, arriba
+const int movX[4] = {0, 1, 0, -1};  
 const int movY[4] = {-1, 0, 1, 0};
 
 // ======== FUNCIONES AUXILIARES =========
 int esValido(int x, int y) {
-    return (x >= 0 && x < FILAS && y >= 0 && y < COLUMNAS && mapa1[x][y] == 0);
+    //printf("%d", matriz[x][y]);
+    return (x >= 0 && x < FILAS && y >= 0 && y < COLUMNAS && mapa2[x][y] == 0);
 }
 
 void inicializarCola(Cola* c) {
@@ -48,7 +53,7 @@ void construirGrafo() {
     // Crear nodos para celdas libres
     for (int x = 0; x < FILAS; x++) {
         for (int y = 0; y < COLUMNAS; y++) {
-            if (mapa1[x][y] == 0) {
+            if (mapa2[x][y] == 0) {
                 grafo[totalNodos].x = x;
                 grafo[totalNodos].y = y;
                 grafo[totalNodos].num_vecinos = 0;

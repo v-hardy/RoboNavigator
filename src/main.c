@@ -73,6 +73,7 @@ int main() {
     int iteracion = 1;
     int opcion_validada = 0;
     int recorrido = 0;
+
     do {
         mostrar_menu();       
         opcion_validada = ingresar_y_validar_opcion();
@@ -119,22 +120,8 @@ int main() {
         printf("    ⏩ Iteracion del menú Nº: %d\n", iteracion);
         iteracion++;
         puts(" ═══════════════════════════════════\n\n\033[0m");
-        // if (opcion_validada != 0) {
-        //     // printf("Ingrese una opcion valida: ");
-          
-        //     // scanf("%d", &opcion);
-        //     // //Si el usuario escribió algo no numérico (ej: "abc"), scanf falla, no consume la entrada, y opcion queda sin cambiar.
-        //     // //Esto es la raíz del bucle infinito si no limpias el buffer.
-
-
-        //     // printf("\033[1A\033[2K");  // Sube y borra toda la línea anterior          
-            
-        //     opcion_validada = ingresar_y_validar_opcion();
-        //     //limpiarPantalla(); 
-        // }
 
     } while(opcion_validada != 0);
-    
     
     return 0;
 }
