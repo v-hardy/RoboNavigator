@@ -3,10 +3,6 @@
 #include "mapa.h" 
 #include "camino.h" 
 
-
-//RE NOMBRAR MAPA1
-
-
 // ======== VARIABLES GLOBALES =========
 extern int mapa1[20][20];
 
@@ -75,8 +71,8 @@ void construirGrafo() {
     }
 }
 
-// ======== BFS =========
-int bfs(int inicio, int fin, int padre[MAX_NODOS]) {
+// Implemetacion de busqueda por anchura
+int busqueda_camino(int inicio, int fin, int padre[MAX_NODOS]) {
     bool visitado[MAX_NODOS] = {false};
     Cola cola;
     inicializarCola(&cola);
@@ -103,41 +99,48 @@ int bfs(int inicio, int fin, int padre[MAX_NODOS]) {
 // ======== camino =========
 int mostrar_camino(int xInicio, int yInicio, int xFin, int yFin) {
 
-    // Validar rango
-    if (xInicio < 0 || xInicio >= FILAS || yInicio < 0 || yInicio >= COLUMNAS ||
-        xFin < 0 || xFin >= FILAS || yFin < 0 || yFin >= COLUMNAS) {
-        printf("\n  \033[1m\033[31m¡Error! Coordenadas fuera del mapa.\033[0m %d %d %d %d\n", xInicio, yInicio, xFin, yFin);
-        return 1;
-    }
-
-
     int inicio = indiceNodo[xInicio][yInicio]; //posicion inicial
     int fin    = indiceNodo[xFin][yFin]; //posicion destino
+    int padre[MAX_NODOS]; //ARREGLO
+    int len = 0;
    
-    int padre[MAX_NODOS];
-    if (bfs(inicio, fin, padre)) {
-        // Reconstruir camino
+    if (busqueda_camino(inicio, fin, padre)) {
+        // Reconstruir camino en un arreglo 'ruta' como antes
         int ruta[MAX_NODOS];
-        int len = 0;
+        
         for (int at = fin; at != -1; at = padre[at]) {
             ruta[len++] = at;
         }
-
-        // Marcar camino en mapa (excepto inicio y fin)
+        
+        // encolar los nodos del camino (de inicio a fin)
+        // 'ruta' está en orden inverso (fin → inicio), así que apilamos al revés
+        for (int i = len - 1; i >= 0; i--) {
+            int nodo = ruta[i];
+            // if (grafo[nodo].x != xInicio && grafo[nodo].y != yInicio) {
+                encolar_lista(grafo[nodo].x, grafo[nodo].y);
+            //}
+        }
+        
+        // Marcar camino en el mapa (excepto inicio y fin)
         for (int i = 1; i < len - 1; i++) {
             int nodo = ruta[i];
             matriz[grafo[nodo].x][grafo[nodo].y] = 3;
         }
 
+        // Mostrar el camino encontrado
         printf("  Camino encontrado (%d pasos):\n", len - 1);
         for (int i = len - 1; i >= 0; i--) {
             printf("(%d,%d) ", grafo[ruta[i]].x + 1, grafo[ruta[i]].y + 1);
         }
         printf("\n");
 
+        // Si quieres, puedes verificar el contenido de la pila sin desencolar
+        printf("\nContenido actual de la pila:\n");
+        recorrer_lista();
+
     } else {
         printf("No se encontró un camino.\n");
     }
 
-    return 0;
+    return len;
 }

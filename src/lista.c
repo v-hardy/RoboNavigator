@@ -2,56 +2,67 @@
 #include <stdlib.h>
 #include "lista.h"
 
+// Variables globales
 Nodo* PRIM = NULL;
+Nodo* ULT  = NULL;
 
-// Función para apilar un nodo con coordenadas x, y
-void apilar(int x, int y) {
-    // Crear nuevo nodo
+// Función: encolar un nodo al final de la cola
+void encolar_lista(int x, int y) {
     Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
     if (nuevo == NULL) {
         printf("Error: No hay memoria disponible\n");
         exit(1);
     }
-    
-    // Asignar valores
+
     nuevo->x = x;
     nuevo->y = y;
-    nuevo->sig = PRIM;
-    nuevo->ant = NULL; // El nuevo nodo será el primero, por lo que no tiene anterior
-    
-    // Si la lista no está vacía, actualizar el puntero ant del antiguo primer nodo
-    if (PRIM != NULL) {
-        PRIM->ant = nuevo;
+    nuevo->sig = NULL;
+
+    if (ULT == NULL) {
+        // Cola vacía: nuevo nodo es el primero y último
+        PRIM = ULT = nuevo;
+    } else {
+        // Enlazar al final
+        ULT->sig = nuevo;
+        ULT = nuevo;
     }
-    
-    // Actualizar PRIM para que apunte al nuevo nodo
-    PRIM = nuevo;
 }
 
-// Función para desapilar el primer nodo y devolver sus coordenadas x, y
-int desapilar(int* x, int* y) {
-    // Verificar si la lista está vacía
+// Función: desencolar el nodo del frente
+int desencolar_lista(int* x, int* y) {
     if (PRIM == NULL) {
-        return 0; // Retorna 0 si la lista está vacía
+        return 0; // Cola vacía
     }
-    
-    // Guardar el nodo a eliminar
+
     Nodo* temp = PRIM;
-    
-    // Almacenar los valores x, y antes de liberar el nodo
     *x = temp->x;
     *y = temp->y;
-    
-    // Actualizar PRIM al siguiente nodo
-    PRIM = temp->sig;
-    
-    // Si hay un nuevo nodo cabeza, su puntero ant debe ser NULL
-    if (PRIM != NULL) {
-        PRIM->ant = NULL;
-    }
-    
-    // Liberar la memoria del nodo desapilado
+
+    PRIM = PRIM->sig;
     free(temp);
-    
-    return 1; // Retorna 1 si se logró desapilar con éxito
+
+    // Si se vació la cola, actualizar ULT
+    if (PRIM == NULL) {
+        ULT = NULL;
+    }
+
+    return 1; // Éxito
+}
+
+// Función: recorrer e imprimir la cola sin modificarla
+void recorrer_lista(void) {
+    if (PRIM == NULL) {
+        printf("Cola vacía.\n");
+        return;
+    }
+
+    printf("COLA (de frente a fondo):\n");
+    Nodo* actual = PRIM;
+    int pos = 1;
+
+    while (actual != NULL) {
+        printf("  [%d] -> (%d, %d)\n", pos++, actual->x+1, actual->y+1);
+        actual = actual->sig;
+    }
+    printf("Fin de la cola.\n");
 }

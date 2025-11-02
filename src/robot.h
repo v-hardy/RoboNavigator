@@ -23,12 +23,16 @@ typedef struct {
 // Inicializa el robot con las posiciones obtenidas del mapa
 void inicializar_robot();
 
+void reiniciar_robot();
+
 int verificar_todos_adyacentes();
 
 int prioridad_de_sentido();
 
 // Mueve el robot un paso hacia su destino
-void mover_robot();
+void mover_segun_lista();
+
+void mover_robot(); //op2
 
 // Verifica si el robot ha llegado a su destino
 bool robot_ha_llegado();

@@ -10,7 +10,7 @@
 #include "interfaz.h"
 #include "robot.h" 
 
-Robot robot = {{-1,-1},{-1,-1},{-1,-1}, false}; // La primera {} es para la estructura completa, la segunda para los miembros. SIEMPRE ASI
+Robot robot = {{-1, -1}, {-1, -1}, {-1, -1}, false};
 
 void mostrar_menu() {
         puts(" ==============================================");
@@ -23,7 +23,7 @@ void mostrar_menu() {
         puts("  4.- Planificar ruta más corta hacia el destino");
         puts("  5.- Mover robot hacia el destino");
         puts("  6.- Mostrar ruta calculada");
-        puts("  7.- Reconfigurar mapa (resetear obstáculos)");
+        puts("  7.- Reiniciar mapa");
         puts("  8.- Ver estado del robot");
         puts("  0.- Salir");
         puts(" ==============================================");
@@ -72,7 +72,7 @@ int main() {
  
     int iteracion = 1;
     int opcion_validada = 0;
-
+    int recorrido = 0;
     do {
         mostrar_menu();       
         opcion_validada = ingresar_y_validar_opcion();
@@ -90,10 +90,13 @@ int main() {
                 opcion_tres();
                 break;
             case 4:
-                opcion_cuatro();
+                recorrido = opcion_cuatro();
                 break;
             case 5:
-                opcion_cinco();   
+                if (recorrido != 0) {
+                    opcion_cinco(recorrido);   
+                } 
+                recorrido = 0;
                 break;
             case 6:
                 puts("Opcion Numero 6!");

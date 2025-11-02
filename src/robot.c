@@ -81,6 +81,13 @@ void inicializar_robot() {
     robot.ha_llegado = false;
 }
 
+void reiniciar_robot() {
+    robot.posicion_inicial = (Posicion){-1, -1};
+    robot.posicion_actual = (Posicion){-1, -1};
+    robot.posicion_destino = (Posicion){-1, -1};
+    robot.ha_llegado = false;
+}
+
 // Verifica si el robot ha llegado a su destino
 bool robot_ha_llegado() {
     return robot.posicion_actual.x == robot.posicion_destino.x &&
@@ -247,6 +254,24 @@ void movimiento(Desplazamiento desplazar){
         printf("\n  🤖 El robot se movio hacia la izquierda.");
         robot.posicion_actual.y--;
     }
+}
+
+void mover_segun_lista(int z) {
+    //rastro de posiscion anterior
+    matriz[robot.posicion_actual.x][robot.posicion_actual.y] = 0;
+    int x, y = 0;
+    if (desencolar_lista(&x, &y)) {
+        printf("  Nodo desapilado: (%d, %d)\n", x + 1, y + 1);
+        //if (robot.posicion_actual.x != robot.posicion_inicial.x && robot.posicion_actual.y != robot.posicion_inicial.y) {
+            robot.posicion_actual.x = x;
+            robot.posicion_actual.y = y;
+    //    }    
+    } else {
+        printf("  Pila vacía, no hay más nodos.\n");
+        z++;
+    }
+    printf("\n  x: %d - Y: %d - iteracion %d", robot.posicion_actual.x, robot.posicion_actual.y, z);
+    robot.ha_llegado = robot_ha_llegado();
 }
 
 void mover_robot() {

@@ -19,7 +19,7 @@ typedef struct {
 } Cola;
 
 void construirGrafo();
-int bfs(int inicio, int fin, int padre[MAX_NODOS]);
+int busqueda_camino(int inicio, int fin, int padre[MAX_NODOS]);
 int mostrar_camino(int xInicio, int yInicio, int xFin, int yFin);
 
 #endif
