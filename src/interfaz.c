@@ -17,15 +17,15 @@ void limpiarPantalla() {
 }
 
 void opcion_uno() {
+
     bool vacia = matriz_vacia(matriz);
     if (vacia) {
-      cargar_matriz();      
+      seleccionar_mapa();    
       imprimir_mapa_ascii();
       
     } else {
-    puts("\n\033[1m  🗺️  El mapa ya fue cargado previamente.​\033[0m");
-    //PODEMOS PREGUNTAR SI DESEA CAMBIARLO
-    //imprimir_mapa_ascii();
+    puts("\n\033[1m  🗺️  Ya hay un mapa cargado. ¿Desea reemplazarlo?​\033[0m");
+        seleccionar_mapa();
   }
 }
 
@@ -67,7 +67,7 @@ int opcion_cuatro() {
             int yInicio = robot.posicion_inicial.y;
             int xFin = robot.posicion_destino.x;
             int yFin = robot.posicion_destino.y;
-            //inicio y fin = a datos del robot
+            //inicio y fin = a inquilino del robot
             int pasos = mostrar_camino(xInicio, yInicio, xFin, yFin);
             printf(" Esta es la cantidad de %d pasos ",pasos);
             imprimir_mapa_ascii();
@@ -80,9 +80,11 @@ int opcion_cuatro() {
 }
 
 void opcion_cinco(int camino) {
-    if (robot.ha_llegado == true) {
-        printf("\n  \033[36m\033[1m🤖 El Robot ya se encuentra en el destino.\033[0m\n");
-    } else if (camino != 0) {
+    if (camino != 0) {
+        if (robot.ha_llegado == true) {
+            printf("\n  \033[36m\033[1m🤖 El Robot ya se encuentra en el destino.\033[0m\n");
+            camino = 0;
+        } else if (camino != 0) {
             int z = 0 ;
             for (int i = 1; i <= camino; i++) {
                 limpiarPantalla(); 
@@ -99,7 +101,15 @@ void opcion_cinco(int camino) {
                     sleep(1);  // sleep en segundos (Linux)
                 #endif
             }
-    }
+            
+        }
+    } else {
+        printf("\n  \033[36m\033[1m  🤖 El robot debe tener un ruta planificada para que se mueva.\033[0m\n");
+    }   
+}
+
+void opcion_seis() {
+    imprimirGrafo();
 }
 
 void opcion_siete(){

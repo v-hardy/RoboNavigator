@@ -7,6 +7,7 @@ void opcion_dos();
 void opcion_tres();
 int opcion_cuatro();
 void opcion_cinco(int iteraciones);
+void opcion_seis();
 void opcion_siete();
 void opcion_ocho();
 void limpiarPantalla();

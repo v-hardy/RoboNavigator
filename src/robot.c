@@ -73,10 +73,16 @@ Posicion capturar_posiciones_destino_del_robot() {
 
 void inicializar_robot() {
     puts("\033[1m\n  RECUERDE: Para establecer coordenadas, el valor de \n  la posicion osila de 1 a 20, en X e Y.\033[0m\n");
-    robot.posicion_inicial = capturar_posiciones_iniciales_del_robot();
-    robot.posicion_actual = robot.posicion_inicial;
-    robot.posicion_destino = capturar_posiciones_destino_del_robot();
-    robot.ha_llegado = false;
+    if (robot.ha_llegado == true) {
+        robot.posicion_inicial = robot.posicion_actual;    
+        robot.posicion_destino = capturar_posiciones_destino_del_robot();
+        robot.ha_llegado = false;
+    } else {
+        robot.posicion_inicial = capturar_posiciones_iniciales_del_robot();
+        robot.posicion_actual = robot.posicion_inicial;
+        robot.posicion_destino = capturar_posiciones_destino_del_robot();
+        robot.ha_llegado = false;
+    }
 }
 
 void reiniciar_robot() {

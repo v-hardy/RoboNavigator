@@ -94,13 +94,10 @@ int main() {
                 recorrido = opcion_cuatro();
                 break;
             case 5:
-                if (recorrido != 0) {
-                    opcion_cinco(recorrido);   
-                } 
-                recorrido = 0;
+                opcion_cinco(recorrido);   
                 break;
             case 6:
-                puts("Opcion Numero 6!");
+                opcion_seis();
                 break;
             case 7:
                 opcion_siete();

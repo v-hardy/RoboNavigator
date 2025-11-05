@@ -9,8 +9,10 @@
 
 extern int matriz[FILAS][COLUMNAS];  // Solo la declaración
 
+void seleccionar_mapa();
 bool matriz_vacia(int matriz[FILAS][COLUMNAS]);
-void cargar_matriz();
+void cargar_matriz(int matriz[FILAS][COLUMNAS]);
+void borrar_rastros_del_mapa();
 void imprimir_matriz();
 void imprimir_mapa_ascii();
 

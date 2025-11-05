@@ -4,8 +4,10 @@
 #include "mapa.h"
 #include "interfaz.h"
 
+#define FILAS 20
+#define COLUMNAS 20
 
-int matriz[FILAS][COLUMNAS] ;
+int matriz[FILAS][COLUMNAS] = {0};
 
 int mapa1[20][20] = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -76,6 +78,40 @@ int mapa3[20][20] = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
+void seleccionar_mapa(){
+    int opc;
+    do{
+        printf("  Eija el mapa...\n");
+        printf("  Opcion 1: Mapa1\n");
+        printf("  Opcion 2: Mapa2\n");
+        printf("  Opcion 3: Mapa3\n");
+        if (scanf("%d", &opc) != -1 && (opc < 1 || opc > 3)) {
+            fprintf(stderr, "  \033[1m\033[31m¡Error! Entrada invalida. Use numeros.\033[0m\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+
+        if (opc < 1 || opc > 3) {
+            printf("Error: Opcion invalida. Debe ser 1, 2 o 3.\n");
+        }
+    }while(1 > opc || opc > 3);
+
+    switch (opc)
+    {
+    case 1:
+        cargar_matriz(mapa1);
+        break;
+    case 2:
+        cargar_matriz(mapa2);
+        break;
+    case 3:
+        cargar_matriz(mapa3);
+        break;
+    }
+
+}
+
 // Función para verificar si la matriz está vacía (todos los elementos son 0)
 bool matriz_vacia(int matriz[FILAS][COLUMNAS]) {
     for (int i = 0; i < FILAS; i++) {
@@ -88,14 +124,14 @@ bool matriz_vacia(int matriz[FILAS][COLUMNAS]) {
     return true;  // Si no encontramos valores distintos de 0, la matriz está vacía
 }
 // Función para rellenar la matriz con 0 y 1
-void cargar_matriz() {
+void cargar_matriz(int mapa[FILAS][COLUMNAS]) {
 
-    bool mapa_vacio = matriz_vacia(mapa2);
+    bool mapa_vacio = matriz_vacia(mapa);
     if (!mapa_vacio) {
     // Copiar los valores de mapa1 a matriz usando un bucle
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                matriz[i][j] = mapa2[i][j];
+                matriz[i][j] = mapa[i][j];
             }
         }
     }
