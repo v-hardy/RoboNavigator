@@ -9,7 +9,7 @@ void opcion_cuatro();
 void opcion_cinco();
 void opcion_seis();
 void opcion_siete();
-void opcion_ocho();
+
 void limpiarPantalla();
 
 #endif

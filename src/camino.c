@@ -70,10 +70,7 @@ int marcarAdyacentes(int row, int col, int value, int robot_encontrado){
 void explorador(){
 
     int n=0;
-    int condicion=0;
-
-    imprimir_mapa_ascii();
-    
+    int condicion=0;    
 
     while(condicion == 0 && n < 500){
 
@@ -134,7 +131,7 @@ Posicion encontrar_camino(int mov){
     }
     
     Posicion pos;
-    //if (min != 9999){
+    //if (min != 9999){ ya ni me acuerdo por que queria poner esta condicion :(
     //printf(" MINIMO: %d - I: %d / J: %d", min, i, j);
     matriz[row][col]=999;
     //printf("En la posicion [%d, %d] dejamos un 999\n", row+1, col+1);

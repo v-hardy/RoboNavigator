@@ -10,7 +10,7 @@
 #include "interfaz.h"
 #include "robot.h" 
 
-Robot robot = {{-1, -1}, {-1, -1}, {-1, -1}, false};
+Robot robot = {{-1, -1}, {-1, -1}, {-1, -1}, {-1, -1}, false};
 
 void mostrar_menu() {
         puts(" ==============================================");
@@ -20,11 +20,10 @@ void mostrar_menu() {
         puts("  1.- Cargar mapa");
         puts("  2.- Establecer coordenadas del robot");
         puts("  3.- Mostrar Mapa+Robot ASCII ");
-        puts("  4.- Planificar ruta más corta hacia el destino");
+        puts("  4.- Agregar Obstaculo");
         puts("  5.- Mover robot hacia el destino");
-        puts("  6.- Mostrar ruta calculada");
-        puts("  7.- Reiniciar mapa");
-        puts("  8.- Ver estado de la matriz");
+        puts("  6.- Reiniciar mapa");
+        puts("  7.- Ver estado de la matriz");
         puts("  0.- Salir");
         puts(" ==============================================");
 }
@@ -49,8 +48,8 @@ int ingresar_y_validar_opcion() {
             printf("Ingrese una opcion valida: ");
         } else {
             limpiarBuffer();  // Limpia el \n restante
-            // Validar rango de opcion aquí
-            if (opcion >= 0 && opcion <= 8) {  
+            // Validar rango de opcion
+            if (opcion >= 0 && opcion <= 7) {  
                 valido = 1;
             } else {
                 printf("\033[1A\033[K"); // Borra línea anterior
@@ -101,9 +100,6 @@ int main() {
                 break;
             case 7:
                 opcion_siete();
-                break;
-            case 8:
-                opcion_ocho();
                 break;
             case 0:
                 puts("Saliendo del programa... ¡Hasta luego!");

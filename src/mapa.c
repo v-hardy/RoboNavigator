@@ -81,10 +81,14 @@ int mapa3[20][20] = {
 void seleccionar_mapa(){
     int opc;
     do{
-        printf("  Eija el mapa...\n");
-        printf("  Opcion 1: Mapa1\n");
-        printf("  Opcion 2: Mapa2\n");
-        printf("  Opcion 3: Mapa3\n");
+        printf("  \nEija el mapa que desee cargar...\n");
+        printf("\n");
+        printf("  > Opcion 1: Mapa 1\n");
+        printf("  > Opcion 2: Mapa 2\n");
+        printf("  > Opcion 3: Mapa 3\n");
+        printf("\n");
+        printf("  > ");
+
         if (scanf("%d", &opc) != -1 && (opc < 1 || opc > 3)) {
             fprintf(stderr, "  \033[1m\033[31m¡Error! Entrada invalida. Use numeros.\033[0m\n");
             while (getchar() != '\n');
@@ -96,6 +100,8 @@ void seleccionar_mapa(){
             printf("Error: Opcion invalida. Debe ser 1, 2 o 3.\n");
         }
     }while(1 > opc || opc > 3);
+
+    reiniciar_robot();
 
     switch (opc)
     {
@@ -146,7 +152,7 @@ void cargar_matriz(int mapa[FILAS][COLUMNAS]) {
         }
     }
     puts("\n\033[32m\033[1m  ✅  Mapa cargado con éxito.\033[0m");
-        
+   
 }
 
 void borrar_rastros_del_mapa() {
