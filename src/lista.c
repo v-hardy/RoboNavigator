@@ -12,7 +12,7 @@ extern int matriz[FILAS][COLUMNAS];
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// Funcion: agregar un nodo al final de la cola
+// Agrega un nodo al final de la cola
 void encolar_lista(int x, int y) {
     Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
     if (nuevo == NULL) {
@@ -28,7 +28,7 @@ void encolar_lista(int x, int y) {
         // Cola vacia: nuevo nodo es el primero y ultimo
         PRIM = ULT = nuevo;
     } else {
-        // Enlazar al final
+        // Agrego al final
         ULT->sig = nuevo;
         ULT = nuevo;
     }
@@ -36,7 +36,7 @@ void encolar_lista(int x, int y) {
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// Funcion: desencolar el nodo inicial
+// Desencolar o recuperar el nodo inicial
 int desencolar_lista(int* x, int* y) {
     if (PRIM == NULL) {
         return 0; // Cola vacia
@@ -54,12 +54,12 @@ int desencolar_lista(int* x, int* y) {
         ULT = NULL;
     }
 
-    return 1; // Exito
+    return 1;
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// Funcion: recorrer e imprimir la cola sin modificarla
+// Recorrer, imprimir, y marcar las posiciones para pintar el camino a seguir de la cola sin modificarla
 void recorrer_lista(void) {
     if (PRIM == NULL) {
         printf("Cola vacía.\n");
@@ -70,6 +70,7 @@ void recorrer_lista(void) {
     int pos = 1;
 
     while (actual != NULL) {
+        
         // Marca con -7 solo si NO es inicio Y NO es destino
         int es_inicio = (actual->x == robot.posicion_actual.x && actual->y == robot.posicion_actual.y);
         int es_destino = (actual->x == robot.posicion_destino.x && actual->y == robot.posicion_destino.y);

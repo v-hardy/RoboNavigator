@@ -13,6 +13,8 @@ int row, col;
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+// Actualiza la posicion de row y col los cuales se usan momentaneamente para calcular la ruta verificando las celdas adyacentes
+
 void actualizar_posicion(int x, int y) {
 
     row=x;
@@ -21,7 +23,7 @@ void actualizar_posicion(int x, int y) {
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// mira arriba, abajo, izquierda y derecha del objeto al que se le pasan los parametros y verifica si encontro el morron sino marca los lugares vacios el camino a seguir
+// Mira arriba, abajo, izquierda y derecha de la posicion actual (pasado por parametro) y verifica si encontro el destino, sino marca en los lugares vacios (donde hay ceros) el camino a seguir
 
 int marcarAdyacentes(int row, int col, int value, int robot_encontrado){
 
@@ -63,8 +65,8 @@ int marcarAdyacentes(int row, int col, int value, int robot_encontrado){
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// llama a "marcarAdyacente()"" para que marque el camino hasta que se encuentre con el destino
-// n es una variable de control para el bucle, condicion captura si se encontro o no el destino en "marcarAdyacente()"
+// Llama a "marcarAdyacente()"" para que marque el camino hasta que se encuentre con el destino
+// n es una variable de control para el bucle, condicion captura si se encontro o no el destino en "marcarAdyacente()" para no seguir iterando demas
 
 void explorador(){
 
@@ -94,12 +96,9 @@ void explorador(){
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// mueve a robot por el mapa siguiendo el numero menor de los que tiene a su alrededor
+// Mueve a las coordenadas auxiliares row y col por el mapa siguiendo el numero menor de los que tiene a su alrededor
 Posicion encontrar_camino(int mov){
     
-    //Nota se puede tratar izq, der, top bot como objetos ya que los mismos poseen coordenadas y valor (en marcarAdyacente tambien se podria)
-    //struct objeto izq;
-
     int izq = matriz[row][col-1];
     int der = matriz[row][col+1];
     int top = matriz[row-1][col];
@@ -132,13 +131,17 @@ Posicion encontrar_camino(int mov){
     Posicion pos;
     //if (min != 9999){ ya ni me acuerdo por que queria poner esta condicion :(
     //printf(" MINIMO: %d - I: %d / J: %d", min, i, j);
-    matriz[row][col]=999;
+
+    //matriz[row][col]=999; // Marco la posicion actual antes de avanzar para dejar el rastro
+
     //printf("En la posicion [%d, %d] dejamos un 999\n", row+1, col+1);
-    encolar_lista(i, j);
-    actualizar_posicion(i, j);
+
+    encolar_lista(i, j); // Agrego la posicion a mi lista que va a tener el recorrido final
+    actualizar_posicion(i, j); // Actualizo la nueva posicion de row y col para avanzar
         
     //}
 
+    // Para devolver pos que es una estructura que tiene (x, y)
     pos.x=i;
     pos.y=j;
 

@@ -10,15 +10,19 @@ extern Robot robot;
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+// Ve que sistema operativo se esta utilizando para limpiar la pantalla con la funcion correspondiente
+
 void limpiarPantalla() {
     #ifdef _WIN32
         system("cls");
     #else
-        (void) system("clear"); // o para capturar int r = system("clear");
+        (void) system("clear");
     #endif
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+// 1.- Cargar mapa
 
 void opcion_uno() {
 
@@ -35,6 +39,8 @@ void opcion_uno() {
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+//  2.- Establecer coordenadas del robot
+
 void opcion_dos() {
     bool vacia = matriz_vacia(matriz);
     if (vacia) {
@@ -48,6 +54,8 @@ void opcion_dos() {
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+// 3.- Mostrar Mapa+Robot ASCII
 
 void opcion_tres() {
     bool vacia = matriz_vacia(matriz);
@@ -64,11 +72,15 @@ void opcion_tres() {
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+// 4.- Agregar Obstaculo
+
 void opcion_cuatro() {
     printf("Opcion 4: ACA HAY QUE AGREGAR OBSTACULO SEGUN 2 COORDENADAS");
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+// 5.- Mover robot hacia el destino
 
 void opcion_cinco() {
     
@@ -84,12 +96,16 @@ void opcion_cinco() {
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+// 6.- Reiniciar mapa
+
 void opcion_seis(){
     reiniciar_robot();
     borrar_rastros_del_mapa();
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+// 7.- Ver estado de la matriz
 
 void opcion_siete() {
     puts("\n  \033[1m\033[4mEstado actual del mapa y robot:\033[0m");

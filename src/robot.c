@@ -46,7 +46,7 @@ Posicion capturar_posiciones_iniciales_del_robot() {
             continue;
         }
         
-        break;  // Todo válido
+        break;
     } while (1);
 
     return p;
@@ -160,6 +160,8 @@ void imprimir_rastro_del_robot() {
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+//Llama Junta las funciones que ayudan a descubrir la ruta que debe tomar el robot
+
 void planificar_ruta(){
       bool vacia = matriz_vacia(matriz);
     if (vacia) {
@@ -193,12 +195,16 @@ void planificar_ruta(){
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+//Recorre la lista en la que se guardo el recorrido que debe hacer el robot para llegar a su destino e imprime el mismo en el mapa
+
 void mostrar_ruta(){
-    recorrer_lista(); //marca la ruta planificada previamente
+    recorrer_lista(); //Internamente marca la ruta planificada previamente
     imprimir_rastro_del_robot();
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+//Avanza el robot actualizando la posicion actual del mismo y va imprimiendo el mapa, tambien actualiza el valor Booleano que indica si se llego o no a destino
 
 void mover_robot(){
 
@@ -221,6 +227,8 @@ void mover_robot(){
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+//Una vez el robot llega a destino, se asigna destinoB guardado a destino para calcular la  nueva ruta
+
 void intercambiar_destinos(){
     robot.posicion_destino.x = robot.posicion_destinoB.x;
     robot.posicion_destino.y = robot.posicion_destinoB.y;
@@ -229,6 +237,8 @@ void intercambiar_destinos(){
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+//Junta las funciones en una serie de pasos ordenados para que el robot haga todo el calculo y el movimiento por si mismo
 
 void automatizar_robot(){
     
