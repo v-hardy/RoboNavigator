@@ -17,14 +17,14 @@ void mostrar_menu() {
         puts("  Bienvenido al SISTEMA DE CONTROL DEL ROBOT!! ");
         puts(" ==============================================");
         puts("  Seleccione una opción:\n");
-        puts("  1.- Cargar mapa actual");
+        puts("  1.- Cargar mapa");
         puts("  2.- Establecer coordenadas del robot");
         puts("  3.- Mostrar Mapa+Robot ASCII ");
         puts("  4.- Planificar ruta más corta hacia el destino");
         puts("  5.- Mover robot hacia el destino");
         puts("  6.- Mostrar ruta calculada");
         puts("  7.- Reiniciar mapa");
-        puts("  8.- Ver estado del robot");
+        puts("  8.- Ver estado de la matriz");
         puts("  0.- Salir");
         puts(" ==============================================");
 }
@@ -91,10 +91,10 @@ int main() {
                 opcion_tres();
                 break;
             case 4:
-                recorrido = opcion_cuatro();
+                opcion_cuatro();
                 break;
             case 5:
-                opcion_cinco(recorrido);   
+                opcion_cinco();   
                 break;
             case 6:
                 opcion_seis();

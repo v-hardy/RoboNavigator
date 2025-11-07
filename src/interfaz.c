@@ -4,6 +4,8 @@
 #include "robot.h"
 #include "interfaz.h"
 #include "camino.h"
+#include "lista.h"
+#include "windows.h"
 
 extern int matriz[FILAS][COLUMNAS];
 extern Robot robot;
@@ -54,7 +56,7 @@ void opcion_tres() {
     }
 }
 
-int opcion_cuatro() {
+void opcion_cuatro() {
     bool vacia = matriz_vacia(matriz);
     if (vacia) {
         puts("\n\033[33m\033[1m  ⚠️  No se puede planificar ruta. Debe cargar el mapa antes.\033[0m");
@@ -62,16 +64,23 @@ int opcion_cuatro() {
         puts("\n\033[33m\033[1m  ⚠️  No se puede planificar ruta. Debe establecer coordenadas del robot antes.\033[0m");
     } else {
         if (robot.ha_llegado != true) {
-            construirGrafo();
-            int xInicio = robot.posicion_inicial.x;
-            int yInicio = robot.posicion_inicial.y;
-            int xFin = robot.posicion_destino.x;
-            int yFin = robot.posicion_destino.y;
-            //inicio y fin = a inquilino del robot
-            int pasos = mostrar_camino(xInicio, yInicio, xFin, yFin);
-            printf(" Esta es la cantidad de %d pasos ",pasos);
-            imprimir_mapa_ascii();
-            return pasos;
+            explorador();
+            int cant=0;
+
+            actualizar_posicion(robot.posicion_actual.x, robot.posicion_actual.y);
+            Posicion pos;
+
+            while((pos.x != robot.posicion_destino.x || pos.y != robot.posicion_destino.y) && cant < 100){ //cant es una variable de seguridad nada mas
+        
+                cant++;
+                //printf("Cantidad de iteraciones: %d\n", cant);
+
+                pos = encontrar_camino(cant);
+            }
+            
+            //printf(" Esta es la cantidad de %d pasos ", cant);
+            //imprimir_mapa_ascii();
+            
         } else if (robot.ha_llegado == true) {
             printf("\n  \033[36m\033[1m🤖 Establezca nuevas coordenadas para poder planificar ruta.\033[0m\n");
         }
@@ -79,37 +88,23 @@ int opcion_cuatro() {
     //continuar por algoritmo de dijkstra
 }
 
-void opcion_cinco(int camino) {
-    if (camino != 0) {
-        if (robot.ha_llegado == true) {
-            printf("\n  \033[36m\033[1m🤖 El Robot ya se encuentra en el destino.\033[0m\n");
-            camino = 0;
-        } else if (camino != 0) {
-            int z = 0 ;
-            for (int i = 1; i <= camino; i++) {
-                limpiarPantalla(); 
-                printf("Esta es la cantidad de %d pasos dentro del bucle.\n", camino);
-                mover_segun_lista(z); // Lógica para mover el robot
-                imprimir_rastro_del_robot(); 
-                if (robot.posicion_actual.x != -1) {
-                    imprimir_mapa_ascii(); 
-                }
+void opcion_cinco() {
+    
+    mover_robot();
 
-                #ifdef _WIN32
-                    Sleep(1000);  // Sleep en milisegundos (Windows)
-                #else
-                    sleep(1);  // sleep en segundos (Linux)
-                #endif
-            }
-            
-        }
-    } else {
-        printf("\n  \033[36m\033[1m  🤖 El robot debe tener un ruta planificada para que se mueva.\033[0m\n");
-    }   
+    if(robot.posicion_actual.x == robot.posicion_destino.x || robot.posicion_actual.y == robot.posicion_destino.y){
+
+        printf("\n  \033[36m\033[1m🤖 El Robot ya se encuentra en el destino.\033[0m\n");
+    }
+    
+    //printf("\n  \033[36m\033[1m  🤖 El robot debe tener un ruta planificada para que se mueva.\033[0m\n");
+      
 }
 
 void opcion_seis() {
-    imprimirGrafo();
+    recorrer_lista();
+    imprimir_rastro_del_robot();
+    imprimir_mapa_ascii();
 }
 
 void opcion_siete(){

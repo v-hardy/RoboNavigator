@@ -1,176 +1,150 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "mapa.h" 
-#include "camino.h" 
+#include "camino.h"
+#include "robot.h"
+#include "windows.h"
+#include "lista.h"
 
-// ======== VARIABLES  =========
-//extern int mapas2[FILAS][COLUMNAS];
-Vertice grafo[MAX_NODOS];
-int indiceVertice[FILAS][COLUMNAS];    // contendra el numero de vertice que corresponde al indice. SOBREDIMENSIONADO
-int total_de_vertices = 0;
+// aca saque el extern y puse prim
+Nodo Prim;
+extern Robot robot;
+extern int matriz[FILAS][COLUMNAS];
 
-// Sera usado para encontrar vertice_adyacente del nodo...
-// derecha, abajo, izquierda, arriba en cada una de las 4 iteraciones
-const int adyacente_en_X[4] = {0, 1, 0, -1};  
-const int adyacente_en_Y[4] = {-1, 0, 1, 0};
+int row, col;
 
-// ======== FUNCIONES PARA OPERAR LA VECINDAD =========
-int esValido(int x, int y) {
-    return (x >= 0 && x < FILAS && y >= 0 && y < COLUMNAS && (matriz[x][y] == 0 || matriz[x][y] == 2 || matriz[x][y] == 5));
+void actualizar_posicion(int x, int y) {
+
+    row=x;
+    col=y;
+  
 }
 
-void inicializarAlojamientos(Vecindad* c) {
-    c->sacados = 0;
-    c->ingresados = 0;
-}
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-int alojamientosVacios(Vecindad* c) {
-    return c->sacados == c->ingresados;
-}
+// mira arriba, abajo, izquierda y derecha del objeto al que se le pasan los parametros y verifica si encontro el morron sino marca los lugares vacios el camino a seguir
 
-void alojar(Vecindad* c, int valor) {
-    if (c->ingresados < MAX_NODOS)
-        c->inquilino[c->ingresados++] = valor;
-}
+int marcarAdyacentes(int row, int col, int value, int robot_encontrado){
 
-int desalojar(Vecindad* c) {
-    return c->inquilino[c->sacados++];    // Siempre sale el primer inquilino en entrar, que ya se habia ingresado previamente.
-}
+    int izq = matriz[row][col-1];
+    int der = matriz[row][col+1];
+    int top = matriz[row-1][col];
+    int bot = matriz[row+1][col];
 
+   /*
+    printf("Izquierda hay un: %d\n", izq);
+    printf("Derecha hay un: %d\n", der);
+    printf("Arriba hay un: %d\n", top);
+    printf("Abajo hay un: %d\n", bot);
+  */
 
-// ======== CONSTRUIR GRAFO =========
-void construirGrafo() {
-    // Inicializo índices
-    for (int x = 0; x < FILAS; x++) {
-        for (int y = 0; y < COLUMNAS; y++) {
-            indiceVertice[x][y] = -1;
-        }
+    if(izq == 0){
+        
+        matriz[row][col-1]= value+1;
     }
+    if(der == 0){
+        
+        matriz[row][col+1]= value+1;
+    }
+    if(top == 0){
+        
+        matriz[row-1][col]= value+1;
+    }
+    if(bot == 0){
+          
+        matriz[row+1][col]= value+1;
+    }
+    
+    if (izq == -2 || der == -2 || top == -2 || bot == -2) {
+        robot_encontrado = 1;
+    }
+    
+    return robot_encontrado;
+}
 
-    total_de_vertices = 0;
-    // Creo vertices/nodos para celdas libres(0) de matriz
-    for (int x = 0; x < FILAS; x++) {
-        for (int y = 0; y < COLUMNAS; y++) {
-            if (matriz[x][y] == 0 || matriz[x][y] == 2 || matriz[x][y] == 5 ) {
-                // agrego un Vertice al grafo
-                grafo[total_de_vertices].x = x;
-                grafo[total_de_vertices].y = y;
-                grafo[total_de_vertices].total_de_vertices_adyacentes = 0;
-                // asocio el indice de coordenadas al numero de vertice asignado, y luego incremento el total_de_vertices
-                indiceVertice[x][y] = total_de_vertices++;
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+// llama a "marcarAdyacente()"" para que marque el camino hasta que se encuentre con el destino
+// n es una variable de control para el bucle, condicion captura si se encontro o no el destino en "marcarAdyacente()"
+
+void explorador(){
+
+    int n=0;
+    int condicion=0;
+
+    imprimir_mapa_ascii();
+    
+
+    while(condicion == 0 && n < 500){
+
+        for(int i=0; i < FILAS; i++){
+            for(int j=0; j < COLUMNAS; j++){
+
+                if(matriz[i][j] == n+1 && condicion == 0){
+
+                    condicion = marcarAdyacentes(i, j, n+1, condicion);
+                }
+                
             }
         }
+
+        //printf("valor de n: %d \n", n);
+        n++;
+        //printf("valor de condicion: %d \n", condicion);
+
     }
 
-    // Conecto con vertice_adyacente
-    for (int i = 0; i < total_de_vertices; i++) {
-        int x = grafo[i].x;
-        int y = grafo[i].y;
-        for (int k = 0; k < 4; k++) {
-            int nx = x + adyacente_en_X[k];
-            int ny = y + adyacente_en_Y[k];
-            if (esValido(nx, ny)) {
-                grafo[i].vertice_adyacente[grafo[i].total_de_vertices_adyacentes++] = indiceVertice[nx][ny];
-            } 
-        }
-    }
 }
 
-// Implemetacion de busqueda por anchura
-int busqueda_camino(int inicio, int fin, int padre[MAX_NODOS]) {
-    bool visitado[MAX_NODOS] = {false};
-    Vecindad cola;
-    inicializarAlojamientos(&cola);
-    alojar(&cola, inicio);
-    visitado[inicio] = true;
-    padre[inicio] = -1;
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-    while (!alojamientosVacios(&cola)) {
-        int actual = desalojar(&cola);
-        if (actual == fin) return 1;
+// mueve a robot por el mapa siguiendo el numero menor de los que tiene a su alrededor
+Posicion encontrar_camino(int mov){
+    
+    //Nota se puede tratar izq, der, top bot como objetos ya que los mismos poseen coordenadas y valor (en marcarAdyacente tambien se podria)
+    //struct objeto izq;
 
-        for (int i = 0; i < grafo[actual].total_de_vertices_adyacentes; i++) {
-            int vecino = grafo[actual].vertice_adyacente[i];
-            if (!visitado[vecino]) {
-                visitado[vecino] = true;
-                padre[vecino] = actual;
-                alojar(&cola, vecino);
-            }
-        }
+    int izq = matriz[row][col-1];
+    int der = matriz[row][col+1];
+    int top = matriz[row-1][col];
+    int bot = matriz[row+1][col];
+
+    int min= 9999;
+    int i, j;
+
+    if(min > izq && izq != -1 && izq != 0) {
+        min= izq;
+        i=row;
+        j=col-1;
     }
-    return 0;
-}
-
-// ======== camino =========
-int mostrar_camino(int xInicio, int yInicio, int xFin, int yFin) {
-
-    int inicio = indiceVertice[xInicio][yInicio]; //posicion inicial
-    int fin    = indiceVertice[xFin][yFin]; //posicion destino
-    int padre[MAX_NODOS]; //ARREGLO
-    int cadena = 0;    // longitud de cadena elemental y sencilla  
-    printf("Dentro de mostrar camino %d - %d - %d -  %d.\n",inicio, fin, padre, cadena);
-
-    if (busqueda_camino(inicio, fin, padre)) {
-        printf("Dentro de mostrar camino en el if.\n");
-        // Reconstruir camino en un arreglo 'ruta' como antes
-        int ruta[MAX_NODOS];
-        
-        for (int at = fin; at != -1; at = padre[at]) {
-            ruta[cadena++] = at;
-        }
-        
-        //  encolar los nodos del camino (de inicio a fin)
-        // 'ruta' está en orden inverso (fin → inicio), así que apilamos al revés
-        for (int i = cadena - 1; i >= 0; i--) {
-            int nodo = ruta[i];
-            // if (grafo[nodo].x != xInicio && grafo[nodo].y != yInicio) {
-                encolar_lista(grafo[nodo].x, grafo[nodo].y);
-            //}
-        }
-        
-        // Marcar camino en el mapa (excepto inicio y fin)
-        for (int i = 1; i < cadena - 1; i++) {
-            int nodo = ruta[i];
-            matriz[grafo[nodo].x][grafo[nodo].y] = 3;
-        }
-
-        // Mostrar el camino encontrado
-        printf("  Camino encontrado (%d pasos):\n", cadena - 1);
-        for (int i = cadena - 1; i >= 0; i--) {
-            printf("(%d,%d) ", grafo[ruta[i]].x + 1, grafo[ruta[i]].y + 1);
-        }
-        printf("\n");
-
-        // Si quieres, puedes verificar el contenido de la pila sin desalojar
-        printf("\nContenido actual de la pila:\n");
-        recorrer_lista();
-
-    } else {
-        printf("No se encontró un camino.\n");
-        printf("Dentro de mostrar camino  %d - %d - %d -  %d.\n",inicio, fin, padre, cadena);
-
+    if(min > der && der != -1 && der != 0){
+        min= der;
+        i=row;
+        j=col+1;
+    } 
+    if(min > top && top != -1 && top != 0){
+        min= top;
+        i=row-1;
+        j=col;
+    } 
+    if(min > bot && bot != -1 && bot != 0){
+        min= bot;
+        i=row+1;
+        j=col;
     }
-
-    return cadena;
-}
-
-void imprimirGrafo() {
-    // Recorremos todos los vértices del grafo
-    for (int i = 0; i < total_de_vertices; i++) {
-        // Imprimimos las coordenadas del vértice actual
-        printf("Vértice %d: (%d, %d)\n", i, grafo[i].x, grafo[i].y);
+    
+    Posicion pos;
+    //if (min != 9999){
+    //printf(" MINIMO: %d - I: %d / J: %d", min, i, j);
+    matriz[row][col]=999;
+    //printf("En la posicion [%d, %d] dejamos un 999\n", row+1, col+1);
+    encolar_lista(i, j);
+    actualizar_posicion(i, j);
         
-        // Imprimimos los vértices adyacentes
-        if (grafo[i].total_de_vertices_adyacentes > 0) {
-            printf("  Adyacentes a (%d, %d): ", grafo[i].x, grafo[i].y);
-            for (int j = 0; j < grafo[i].total_de_vertices_adyacentes; j++) {
-                // Imprimimos las coordenadas de cada vértice adyacente
-                int adyacente_idx = grafo[i].vertice_adyacente[j];
-                printf("(%d, %d) ", grafo[adyacente_idx].x, grafo[adyacente_idx].y);
-            }
-            printf("\n");
-        } else {
-            printf("  No tiene vértices adyacentes.\n");
-        }
-    }
+    //}
+
+    pos.x=i;
+    pos.y=j;
+
+    return pos;
 }

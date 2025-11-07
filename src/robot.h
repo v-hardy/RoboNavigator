@@ -2,28 +2,24 @@
 #define ROBOT_H
 #include <stdbool.h>
 #include "posicion.h"
+#include "lista.h"
 
 extern Posicion p;
 
 typedef struct {
     Posicion posicion_inicial;
     Posicion posicion_actual;
-    Posicion posicion_destino;
+    Posicion posicion_destino; 
+    Posicion posicion_destinoB; //se agrego nueva posicion de destino a capturar
+    //Nodo* circuito;
     bool ha_llegado;
 } Robot;
 
-typedef struct {
-    int arriba;
-    int derecha;
-    int abajo;
-    int izquierda;
-} Desplazamiento;
+
 
 void inicializar_robot();
 
 void reiniciar_robot();
-
-void mover_segun_lista(int z);
 
 bool robot_ha_llegado();
 
@@ -34,5 +30,7 @@ void imprimir_rastro_del_robot();
 Posicion capturar_posiciones_iniciales_del_robot();
 
 Posicion capturar_posiciones_destino_del_robot();
+
+void mover_robot();
 
 #endif
