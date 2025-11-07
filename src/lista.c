@@ -10,6 +10,8 @@ Nodo* PRIM = NULL;
 Nodo* ULT  = NULL;
 extern int matriz[FILAS][COLUMNAS];
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 // Funcion: agregar un nodo al final de la cola
 void encolar_lista(int x, int y) {
     Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
@@ -32,6 +34,8 @@ void encolar_lista(int x, int y) {
     }
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 // Funcion: desencolar el nodo inicial
 int desencolar_lista(int* x, int* y) {
     if (PRIM == NULL) {
@@ -52,6 +56,8 @@ int desencolar_lista(int* x, int* y) {
 
     return 1; // Exito
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 // Funcion: recorrer e imprimir la cola sin modificarla
 void recorrer_lista(void) {

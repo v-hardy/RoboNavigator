@@ -3,21 +3,20 @@
 #include "mapa.h" 
 #include "camino.h"
 #include "robot.h"
-#include "windows.h"
 #include "lista.h"
 
-// aca saque el extern y puse prim
 Nodo Prim;
 extern Robot robot;
 extern int matriz[FILAS][COLUMNAS];
 
 int row, col;
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void actualizar_posicion(int x, int y) {
 
     row=x;
     col=y;
-  
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>

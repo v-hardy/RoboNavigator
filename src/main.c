@@ -12,6 +12,8 @@
 
 Robot robot = {{-1, -1}, {-1, -1}, {-1, -1}, {-1, -1}, false};
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void mostrar_menu() {
         puts(" ==============================================");
         puts("  Bienvenido al SISTEMA DE CONTROL DEL ROBOT!! ");
@@ -28,10 +30,14 @@ void mostrar_menu() {
         puts(" ==============================================");
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void limpiarBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 int ingresar_y_validar_opcion() {
     int opcion;
@@ -60,6 +66,10 @@ int ingresar_y_validar_opcion() {
 
     return opcion;
 }
+
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 
 int main() {
     // Para el encoding en Windows
@@ -118,4 +128,3 @@ int main() {
     
     return 0;
 }
-

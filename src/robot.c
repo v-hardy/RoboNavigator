@@ -10,11 +10,15 @@
 extern int matriz[FILAS][COLUMNAS];
 extern Robot robot;
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 // Función segura para limpiar el buffer
 void limpiar_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 Posicion capturar_posiciones_iniciales_del_robot() {
     Posicion p;
@@ -48,6 +52,8 @@ Posicion capturar_posiciones_iniciales_del_robot() {
     return p;
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 Posicion capturar_posiciones_destino_del_robot() {
     Posicion p;
     do {
@@ -80,6 +86,8 @@ Posicion capturar_posiciones_destino_del_robot() {
     return p;
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void inicializar_robot() {
     puts("\033[1m\n  RECUERDE: Para establecer coordenadas, el valor de \n  la posicion osila de 1 a 20, en X e Y.\033[0m\n");
     if (robot.ha_llegado == true) {
@@ -98,6 +106,8 @@ void inicializar_robot() {
     }
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void reiniciar_robot() {
     robot.posicion_inicial = (Posicion){-1, -1};
     robot.posicion_actual = (Posicion){-1, -1};
@@ -105,11 +115,14 @@ void reiniciar_robot() {
     robot.ha_llegado = false;
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 bool robot_ha_llegado() {
     return robot.posicion_actual.x == robot.posicion_destino.x &&
            robot.posicion_actual.y == robot.posicion_destino.y;
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 void imprimir_estado_robot() {
     if (robot.posicion_actual.x != -1) {
@@ -126,6 +139,8 @@ void imprimir_estado_robot() {
         }
     }
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 void imprimir_rastro_del_robot() {
     if (robot.posicion_actual.x == -1) {
@@ -192,7 +207,7 @@ void mover_robot(){
 
         robot.posicion_actual.x = row;
         robot.posicion_actual.y = col;
-        
+
         borrar_rastros_del_mapa();
         imprimir_rastro_del_robot();
 
@@ -202,7 +217,6 @@ void mover_robot(){
         imprimir_mapa_ascii();
         robot.ha_llegado = robot_ha_llegado();
     }
-
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>

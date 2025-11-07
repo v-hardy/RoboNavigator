@@ -16,8 +16,5 @@ extern Nodo* ULT;
 void encolar_lista(int x, int y);
 int desencolar_lista(int* x, int* y); 
 void recorrer_lista(void);
-void encolar_circular(Nodo** SEG, int x, int y);
-void mostrar_circular(Nodo** SEG);
-void desencolar_circular(Nodo** SEG);
 
 #endif

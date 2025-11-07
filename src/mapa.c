@@ -78,6 +78,8 @@ int mapa3[20][20] = {
     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}
 };
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void seleccionar_mapa(){
     int opc;
     do{
@@ -115,8 +117,9 @@ void seleccionar_mapa(){
         cargar_matriz(mapa3);
         break;
     }
-
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 // Función para verificar si la matriz está vacía (todos los elementos son 0)
 bool matriz_vacia(int matriz[FILAS][COLUMNAS]) {
@@ -129,6 +132,9 @@ bool matriz_vacia(int matriz[FILAS][COLUMNAS]) {
     }
     return true;  // Si no encontramos valores distintos de 0, la matriz está vacía
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 // Función para rellenar la matriz con 0 y 1
 void cargar_matriz(int mapa[FILAS][COLUMNAS]) {
 
@@ -141,19 +147,11 @@ void cargar_matriz(int mapa[FILAS][COLUMNAS]) {
             }
         }
     }
-    // POR SI NO EXISTE MAPA DEFINIDO, GENERA UNO ALEATORIO
-    bool vacia = matriz_vacia(matriz);
-    if (vacia) {   
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                // 20% de probabilidad de obstáculo (1), resto vacío (0)
-                matriz[i][j] = (rand() % 100 < 20) ? 1 : 0;
-            }
-        }
-    }
+
     puts("\n\033[32m\033[1m  ✅  Mapa cargado con éxito.\033[0m");
-   
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 void borrar_rastros_del_mapa() {
     for (int i = 0; i < FILAS; i++) {
@@ -164,6 +162,8 @@ void borrar_rastros_del_mapa() {
         }
     }
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 // Función para imprimir la matriz como números
 void imprimir_matriz() {
@@ -183,6 +183,8 @@ void imprimir_matriz() {
         puts("  \033[33m\033[1m⚠️  Debe cargar el mapa antes.\033[0m\n");
     }
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 // Función para imprimir la matriz como mapa ASCII
 void imprimir_mapa_ascii() {

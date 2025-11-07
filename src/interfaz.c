@@ -8,6 +8,8 @@
 extern int matriz[FILAS][COLUMNAS];
 extern Robot robot;
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void limpiarPantalla() {
     #ifdef _WIN32
         system("cls");
@@ -15,6 +17,8 @@ void limpiarPantalla() {
         (void) system("clear"); // o para capturar int r = system("clear");
     #endif
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 void opcion_uno() {
 
@@ -29,6 +33,8 @@ void opcion_uno() {
   }
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void opcion_dos() {
     bool vacia = matriz_vacia(matriz);
     if (vacia) {
@@ -40,6 +46,8 @@ void opcion_dos() {
       imprimir_rastro_del_robot();
     }
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 void opcion_tres() {
     bool vacia = matriz_vacia(matriz);
@@ -54,9 +62,13 @@ void opcion_tres() {
     }
 }
 
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 void opcion_cuatro() {
     printf("Opcion 4: ACA HAY QUE AGREGAR OBSTACULO SEGUN 2 COORDENADAS");
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 void opcion_cinco() {
     
@@ -68,13 +80,16 @@ void opcion_cinco() {
         intercambiar_destinos();
         automatizar_robot();
     }
-          
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 void opcion_seis(){
     reiniciar_robot();
     borrar_rastros_del_mapa();
 }
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 void opcion_siete() {
     puts("\n  \033[1m\033[4mEstado actual del mapa y robot:\033[0m");
