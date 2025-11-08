@@ -107,7 +107,7 @@ void opcion_seis(){
 
 // 7.- Ver estado de la matriz
 
-void opcion_siete() {
+void opcion_siete(){
     puts("\n  \033[1m\033[4mEstado actual del mapa y robot:\033[0m");
     imprimir_estado_robot();
     imprimir_rastro_del_robot();

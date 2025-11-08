@@ -87,7 +87,7 @@ Posicion capturar_posiciones_destino_del_robot() {
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
-
+// cuando el robot llega despoues de hacer los 2 destinos y le ingresamos nuevos destinos solo pide 1 destino en vez de 2, hay que corregir eso, creo que es aca
 void inicializar_robot() {
     puts("\033[1m\n  RECUERDE: Para establecer coordenadas, el valor de \n  la posicion osila de 1 a 20, en X e Y.\033[0m\n");
     if (robot.ha_llegado == true) {
@@ -200,6 +200,8 @@ void planificar_ruta(){
 void mostrar_ruta(){
     recorrer_lista(); //Internamente marca la ruta planificada previamente
     imprimir_rastro_del_robot();
+    imprimir_mapa_ascii();
+    Sleep(800);
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
@@ -213,14 +215,14 @@ void mover_robot(){
 
         robot.posicion_actual.x = row;
         robot.posicion_actual.y = col;
-
+       
+        limpiarPantalla();
         borrar_rastros_del_mapa();
         imprimir_rastro_del_robot();
-
-        Sleep(300);
-        limpiarPantalla();
-
+    
         imprimir_mapa_ascii();
+        Sleep(350);
+
         robot.ha_llegado = robot_ha_llegado();
     }
 }
@@ -242,8 +244,8 @@ void intercambiar_destinos(){
 
 void automatizar_robot(){
     
-    Sleep(700);
     planificar_ruta();
     mostrar_ruta();
+    limpiarPantalla();
     mover_robot();
 }

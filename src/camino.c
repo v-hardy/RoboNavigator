@@ -132,7 +132,7 @@ Posicion encontrar_camino(int mov){
     //if (min != 9999){ ya ni me acuerdo por que queria poner esta condicion :(
     //printf(" MINIMO: %d - I: %d / J: %d", min, i, j);
 
-    //matriz[row][col]=999; // Marco la posicion actual antes de avanzar para dejar el rastro
+    matriz[row][col]=999; // Marco la posicion actual antes de avanzar para dejar el rastro
 
     //printf("En la posicion [%d, %d] dejamos un 999\n", row+1, col+1);
 
