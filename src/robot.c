@@ -2,10 +2,16 @@
 #include "robot.h"
 #include "mapa.h"
 #include "posicion.h"  
-#include "windows.h"
 #include "lista.h"
 #include "camino.h"
 #include "interfaz.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
 
 extern int matriz[FILAS][COLUMNAS];
 extern Robot robot;
@@ -199,7 +205,6 @@ void planificar_ruta(){
                 // No hay ruta: mostrar mapa + error debajo
                 imprimir_mapa_ascii();
                 puts("\n\033[1m\033[31mError: No se encontró ruta. El robot o el destino está inaccesible por obstáculos.\033[0m");
-                puts("Sugerencia: Reinicie el robot (opción 2) o cambie el destino.");
                 return;  // Vuelve al menú sin proceder
             }
 
@@ -232,8 +237,13 @@ void planificar_ruta(){
 void mostrar_ruta(){
     recorrer_lista(); //Internamente marca la ruta planificada previamente
     imprimir_rastro_del_robot();
-    imprimir_mapa_ascii();
-    Sleep(800);
+    //imprimir_mapa_ascii();
+
+    #ifdef _WIN32
+        Sleep(800);  // milisegundos en Windows
+    #else
+        sleep(1);  // segundos en Linux
+    #endif 
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
@@ -253,7 +263,11 @@ void mover_robot(){
         imprimir_rastro_del_robot();
     
         imprimir_mapa_ascii();
-        Sleep(350);
+        #ifdef _WIN32
+            Sleep(800);  // milisegundos en Windows
+        #else
+            sleep(1);  // segundos en Linux
+        #endif
 
         robot.ha_llegado = robot_ha_llegado();
     }
@@ -289,15 +303,16 @@ void automatizar_robot(){
 
     // Si no hay ruta (lista vacía), mostrar error con mapa
     if (lista_vacia()) {
-        imprimir_mapa_ascii();
+        //imprimir_mapa_ascii();
         puts("\n\033[1m\033[31mError: No se encontró ruta. El robot o el destino está inaccesible por obstáculos.\033[0m");
+        
+        /// luego de aca deberia reestablecer todo a cero para evitar error
         puts("Sugerencia: Reinicie el mapa o cambie el destino.");
         return;  // Vuelve al menú
     }
 
     mostrar_ruta();
-    limpiarPantalla();
-
+    limpiarPantalla();   
     mover_robot();
 }
 

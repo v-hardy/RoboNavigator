@@ -41,7 +41,7 @@ int desencolar_lista(int* x, int* y){
     if (PRIM == NULL) {
         return 0; // Cola vacia
     }
-
+    
     Nodo* temp = PRIM;
     *x = temp->x;
     *y = temp->y;
@@ -67,7 +67,7 @@ void recorrer_lista(void){
     }
     
     Nodo* actual = PRIM;
-    int pos = 1;
+    //int pos = 1;
 
     while (actual != NULL) {
         

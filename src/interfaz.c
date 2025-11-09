@@ -3,7 +3,12 @@
 #include "mapa.h"
 #include "robot.h"
 #include "interfaz.h"
-#include "windows.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 extern int matriz[FILAS][COLUMNAS];
 extern Robot robot;
@@ -16,7 +21,8 @@ void limpiarPantalla() {
     #ifdef _WIN32
         system("cls");
     #else
-        (void) system("clear");
+        int _ = system("clear");
+        (void)_;
     #endif
 }
 
@@ -130,6 +136,7 @@ void opcion_cuatro(){
 // 5.- Mover robot hacia el destino
 
 void opcion_cinco(){
+    borrar_rastros_del_mapa(); // SE AGREGA
 
     // 1. Validar que haya un mapa cargado
     if (matriz_vacia(matriz)) {
@@ -146,12 +153,21 @@ void opcion_cinco(){
     }
 
     automatizar_robot();
+    
+    if (lista_vacia() && robot.posicion_actual.x != -1){
+        reiniciar_robot();
+        borrar_rastros_del_mapa();
+    }
+    
+    borrar_rastros_del_mapa(); // estaria quedando el  destino
+    reiniciar_robot();
 
+    
     if (robot_ha_llegado()) { 
         if (robot.posicion_actual.x == robot.posicion_destinoB.x &&
             robot.posicion_actual.y == robot.posicion_destinoB.y) {
             
-            printf("\n\033[32m\033[1m  Llegó al destino B. Ingrese nuevos destinos.\033[0m\n");
+            printf("\n\033[32m\033[1m  Llegó al fin. Ingrese nuevos destinos.\033[0m\n");
 
         } else {
             printf("\n  \033[36m\033[1mEl Robot llegó al punto A. Ahora va al B.\033[0m\n");
@@ -159,6 +175,7 @@ void opcion_cinco(){
             automatizar_robot(); 
         }
     }
+
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>

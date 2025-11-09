@@ -3,7 +3,12 @@
 #include <time.h>
 #include "mapa.h"
 #include "interfaz.h"
-#include "windows.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 #define FILAS 20
 #define COLUMNAS 20
@@ -100,7 +105,11 @@ void seleccionar_mapa(){
 
         if (opc < 1 || opc > 3) {
             puts("  \033[1m\033[31mError: Opción inválida. Debe ser 1, 2 o 3.\033[0m");
-            Sleep(800);
+        #ifdef _WIN32
+            Sleep(800);  // milisegundos en Windows
+        #else
+            sleep(1);  // segundos en Linux
+        #endif
         }
     } while (opc < 1 || opc > 3);
 
@@ -119,7 +128,7 @@ void seleccionar_mapa(){
 
     limpiarPantalla();
     puts("\n\033[32m\033[1m  Mapa cargado con éxito.\033[0m\n");
-    imprimir_mapa_ascii();
+    //imprimir_mapa_ascii();
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
@@ -159,7 +168,7 @@ void cargar_matriz(int mapa[FILAS][COLUMNAS]) {
 void borrar_rastros_del_mapa() {
     for (int i = 0; i < FILAS; i++) {
         for (int j = 0; j < COLUMNAS; j++) {
-            if ((matriz[i][j] != -1) && (matriz[i][j] != 1) &&(matriz[i][j] != -7)) {
+            if ((matriz[i][j] != -1) && (matriz[i][j] == 1) &&(matriz[i][j] == -7)) {
                 matriz[i][j] = 0;
             }
         }
@@ -170,20 +179,16 @@ void borrar_rastros_del_mapa() {
 
 // Función para imprimir la matriz como números
 void imprimir_matriz() {
-    bool vacia = matriz_vacia(matriz);
-    if (!vacia) { 
-    // si la matriz esta vacia, deberia avisar y no imprimir
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                if ( j == 0 ) {
-                    printf("  ");
-                }
-                printf("   %d    ", matriz[i][j]);
-            }
-            printf("\n");
-        }
-    } else {
+    if (matriz_vacia(matriz)) {
         puts("  \033[33m\033[1m⚠️  Debe cargar el mapa antes.\033[0m\n");
+        return;
+    }
+
+    for (int i = 0; i < FILAS; i++) {
+        for (int j = 0; j < COLUMNAS; j++) {
+            printf("%6d", matriz[i][j]); // ancho fijo de 6
+        }
+        printf("\n");
     }
 }
 
@@ -216,7 +221,7 @@ void imprimir_mapa_ascii() {
             } else if (matriz[i][j] == -2) {
                 printf("🤖​");  // Robot
             } else if (matriz[i][j] == -7) {
-                printf("​🔸​​​");  // Recorrido
+                printf("​🔸​​​");  // Por recorrer
             } /*else if (matriz[i][j] == 4) {
                 printf("​🚩​​​");  // Parada intermedia
                 

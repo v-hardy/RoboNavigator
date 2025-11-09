@@ -10,7 +10,7 @@
 #include "interfaz.h"
 #include "robot.h" 
 
-Robot robot = {{-1, -1}, {-1, -1}, {-1, -1}, {-1, -1}, false};
+Robot robot = {{-1, -1}, {-1, -1}, {-1, -1}, {-1, -1}, false, true};
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
@@ -81,7 +81,6 @@ int main() {
  
     int iteracion = 1;
     int opcion_validada = 0;
-    int recorrido = 0;
 
     do {
         mostrar_menu();       

@@ -100,14 +100,16 @@ bool explorador(){
 
 // Mueve a las coordenadas auxiliares row y col por el mapa siguiendo el numero menor de los que tiene a su alrededor
 Posicion encontrar_camino(int mov){
-    
+    (void)mov;
+
     int izq = matriz[row][col-1];
     int der = matriz[row][col+1];
     int top = matriz[row-1][col];
     int bot = matriz[row+1][col];
 
     int min= 9999;
-    int i, j;
+    int i = 0;
+    int j = 0;
 
     if(min > izq && izq != -1 && izq != 0) {
         min= izq;
@@ -130,7 +132,7 @@ Posicion encontrar_camino(int mov){
         j=col;
     }
     
-    Posicion pos;
+    Posicion posi;
     //if (min != 9999){ ya ni me acuerdo por que queria poner esta condicion :(
     //printf(" MINIMO: %d - I: %d / J: %d", min, i, j);
 
@@ -144,8 +146,8 @@ Posicion encontrar_camino(int mov){
     //}
 
     // Para devolver pos que es una estructura que tiene (x, y)
-    pos.x=i;
-    pos.y=j;
+    posi.x=i;
+    posi.y=j;
 
-    return pos;
+    return posi;
 }
