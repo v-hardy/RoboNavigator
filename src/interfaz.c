@@ -74,33 +74,142 @@ void opcion_tres() {
 
 // 4.- Agregar Obstaculo
 
-void opcion_cuatro() {
-    printf("Opcion 4: ACA HAY QUE AGREGAR OBSTACULO SEGUN 2 COORDENADAS");
+void opcion_cuatro(){
+    printf("Opcion 4: Agregar Obstaculo\n\n");
+
+    // 1. Validar mapa
+    if (matriz_vacia(matriz)) {
+        printf("  \033[33m\033[1mAdvertencia: Debe cargar un mapa primero.\033[0m\n\n");
+        return;
+    }
+
+    int fila, columna;
+    int resultado;
+
+    // MOSTRAR MAPA ANTES DE PEDIR COORDENADAS
+    printf("  Mapa actual:\n");
+    imprimir_mapa_ascii();
+
+    printf("\n  Ingrese coordenadas del obstáculo (fila columna, 1-20): ");
+
+    // Leer entrada
+    if (scanf("%d %d", &fila, &columna) != 2) {
+   
+        limpiarPantalla();
+        printf("\n  \033[1m\033[31mError: Formato inválido. Use: fila columna\033[0m\n\n");
+        return;
+    }
+
+    resultado = agregar_obstaculo(fila, columna);
+
+    limpiarPantalla();
+    printf("Opcion 4: Agregar Obstaculo\n\n");
+
+    if (resultado == 0) {
+        imprimir_mapa_ascii();
+        printf("  \033[32m\033[1mÉxito: Obstáculo agregado en (%d, %d)\033[0m\n\n", fila, columna);
+
+    } else {
+        imprimir_mapa_ascii();
+        // Errores
+        if (resultado == -1) {
+            printf("  \033[1m\033[31mError: Coordenadas fuera de rango o ya hay obstáculo.\033[0m\n\n");
+        } else if (resultado == -2) {
+            printf("  \033[1m\033[31mError: No puedes colocar un obstáculo sobre el robot.\033[0m\n\n");
+        } else if (resultado == 1) {
+            printf("  \033[1m\033[31mError: No puedes colocar un obstáculo en el destino.\033[0m\n\n");
+        } else {
+            printf("  \033[1m\033[31mError: Casilla ocupada (valor: %d).\033[0m\n\n", resultado);
+        }
+        printf("  Mapa sin cambios:\n");
+    }
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 // 5.- Mover robot hacia el destino
 
-void opcion_cinco() {
-    
-    automatizar_robot();
-    
-    if(robot.posicion_actual.x == robot.posicion_destino.x || robot.posicion_actual.y == robot.posicion_destino.y){
+void opcion_cinco(){
 
-        printf("\n  \033[36m\033[1m🤖 El Robot llego al punto A.\033[0m\n");
-        intercambiar_destinos();
-        automatizar_robot();
+    // 1. Validar que haya un mapa cargado
+    if (matriz_vacia(matriz)) {
+        puts("\n\033[33m\033[1m  ¡Error! Debe cargar un mapa antes de mover el robot.\033[0m");
+        puts("  Use la opción 1 para cargar un mapa.\n");
+        return;
+    }
+
+    // 2. Validar que el robot esté inicializado
+    if (!robot_esta_inicializado()) {
+        puts("\n\033[33m\033[1m  ¡Error! Debe inicializar el robot con coordenadas.\033[0m");
+        puts("  Use la opción 2 para establecer posición inicial y destinos.\n");
+        return;
+    }
+
+    automatizar_robot();
+
+    if (robot_ha_llegado()) { 
+        if (robot.posicion_actual.x == robot.posicion_destinoB.x &&
+            robot.posicion_actual.y == robot.posicion_destinoB.y) {
+            
+            printf("\n\033[32m\033[1m  Llegó al destino B. Ingrese nuevos destinos.\033[0m\n");
+
+        } else {
+            printf("\n  \033[36m\033[1mEl Robot llegó al punto A. Ahora va al B.\033[0m\n");
+            intercambiar_destinos(); 
+            automatizar_robot(); 
+        }
     }
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// 6.- Reiniciar mapa
+// 6.- Reiniciar mapa COMPLETAMENTE (robot, mapa, todo)
+void opcion_seis() {
+    limpiarPantalla();
+    puts("\n\033[1m\033[33m  Reiniciando todo el sistema...\033[0m\n");
 
-void opcion_seis(){
+    // 1. Reiniciar robot
     reiniciar_robot();
+
+    // 2. Limpiar cola de camino
+    while (!lista_vacia()) {
+        int x, y;
+        desencolar_lista(&x, &y);
+    }
+    PRIM = ULT = NULL;
+
+    // 3. Recargar el último mapa usado
+    if (ultimo_mapa_seleccionado == 0) {
+        puts("  No se ha cargado ningún mapa aún.");
+        puts("  Debe seleccionar un mapa desde la opción 1.\n");
+    } else {
+        switch (ultimo_mapa_seleccionado) {
+            case 1:
+                cargar_matriz(mapa1);
+                break;
+            case 2:
+                cargar_matriz(mapa2);
+                break;
+            case 3:
+                cargar_matriz(mapa3);
+                break;
+        }
+    }
+
+    // 4. Borrar rastros (por si quedó algo)
     borrar_rastros_del_mapa();
+
+    // 5. Mostrar resultado
+    puts("\n\033[1m\033[32m  Sistema reiniciado correctamente.\033[0m");
+    if (ultimo_mapa_seleccionado != 0) {
+        printf("  Se ha restaurado el Mapa %d.\n", ultimo_mapa_seleccionado);
+    }
+    puts("  Robot, destinos y rutas han sido eliminados.\n");
+
+    imprimir_mapa_ascii();
+
+    puts("\n  Presione Enter para continuar...");
+    getchar();
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>

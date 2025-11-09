@@ -3,11 +3,13 @@
 #include <time.h>
 #include "mapa.h"
 #include "interfaz.h"
+#include "windows.h"
 
 #define FILAS 20
 #define COLUMNAS 20
 
 int matriz[FILAS][COLUMNAS] = {0};
+int ultimo_mapa_seleccionado = 0;  // 0 = ninguno, 1=mapa1, 2=mapa2, 3=mapa3
 
 int mapa1[20][20] = {
     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -83,40 +85,41 @@ int mapa3[20][20] = {
 void seleccionar_mapa(){
     int opc;
     do{
-        printf("  \nEija el mapa que desee cargar...\n");
-        printf("\n");
-        printf("  > Opcion 1: Mapa 1\n");
-        printf("  > Opcion 2: Mapa 2\n");
-        printf("  > Opcion 3: Mapa 3\n");
-        printf("\n");
+        limpiarPantalla();
+        puts("\n\033[1m  Seleccione el mapa que desee cargar...\033[0m\n");
+        puts("  > Opción 1: Mapa 1");
+        puts("  > Opción 2: Mapa 2");
+        puts("  > Opción 3: Mapa 3\n");
         printf("  > ");
 
-        if (scanf("%d", &opc) != -1 && (opc < 1 || opc > 3)) {
-            fprintf(stderr, "  \033[1m\033[31m¡Error! Entrada invalida. Use numeros.\033[0m\n");
-            while (getchar() != '\n');
+        if (scanf("%d", &opc) != 1) {
+            fprintf(stderr, "  \033[1m\033[31m¡Error! Entrada inválida. Use números.\033[0m\n");
+            
             continue;
         }
 
-
         if (opc < 1 || opc > 3) {
-            printf("Error: Opcion invalida. Debe ser 1, 2 o 3.\n");
+            puts("  \033[1m\033[31mError: Opción inválida. Debe ser 1, 2 o 3.\033[0m");
+            Sleep(800);
         }
-    }while(1 > opc || opc > 3);
+    } while (opc < 1 || opc > 3);
 
+    // Guardar cuál fue el mapa elegido
+    ultimo_mapa_seleccionado = opc;
+
+    // Reiniciar robot antes de cargar
     reiniciar_robot();
 
-    switch (opc)
-    {
-    case 1:
-        cargar_matriz(mapa1);
-        break;
-    case 2:
-        cargar_matriz(mapa2);
-        break;
-    case 3:
-        cargar_matriz(mapa3);
-        break;
+    // Cargar el mapa seleccionado
+    switch (opc) {
+        case 1: cargar_matriz(mapa1); break;
+        case 2: cargar_matriz(mapa2); break;
+        case 3: cargar_matriz(mapa3); break;
     }
+
+    limpiarPantalla();
+    puts("\n\033[32m\033[1m  Mapa cargado con éxito.\033[0m\n");
+    imprimir_mapa_ascii();
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
@@ -140,7 +143,7 @@ void cargar_matriz(int mapa[FILAS][COLUMNAS]) {
 
     bool mapa_vacio = matriz_vacia(mapa);
     if (!mapa_vacio) {
-    // Copiar los valores de mapa1 a matriz usando un bucle
+   
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
                 matriz[i][j] = mapa[i][j];
@@ -228,4 +231,19 @@ void imprimir_mapa_ascii() {
         printf("%d\n", i+1 );
         printf("\n");
     }
+}
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+int agregar_obstaculo(int fila, int columna) {
+    if (fila < 1 || fila > 20 || columna < 1 || columna > 20) return -1;
+    int f = fila - 1, c = columna - 1;
+
+    if (matriz[f][c] == -2) return -2;  // Robot
+    if (matriz[f][c] == 1)  return 1;   // Destino
+    if (matriz[f][c] == -1) return -1;  // Obstáculo
+    if (matriz[f][c] != 0)  return matriz[f][c]; // Otro
+
+    matriz[f][c] = -1;
+    return 0;
 }

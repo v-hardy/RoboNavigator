@@ -5,7 +5,7 @@
 
 extern int matriz[FILAS][COLUMNAS];
 
-void explorador();
+bool explorador();
 int marcarAdyacentes(int row, int col, int value, int robot_encontrado);
 Posicion encontrar_camino(int mov);
 void actualizar_posicion(int x, int y);

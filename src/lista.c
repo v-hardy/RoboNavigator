@@ -13,7 +13,7 @@ extern int matriz[FILAS][COLUMNAS];
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 // Agrega un nodo al final de la cola
-void encolar_lista(int x, int y) {
+void encolar_lista(int x, int y){
     Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
     if (nuevo == NULL) {
         printf("Error: No hay memoria disponible\n");
@@ -37,7 +37,7 @@ void encolar_lista(int x, int y) {
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 // Desencolar o recuperar el nodo inicial
-int desencolar_lista(int* x, int* y) {
+int desencolar_lista(int* x, int* y){
     if (PRIM == NULL) {
         return 0; // Cola vacia
     }
@@ -60,7 +60,7 @@ int desencolar_lista(int* x, int* y) {
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
 // Recorrer, imprimir, y marcar las posiciones para pintar el camino a seguir de la cola sin modificarla
-void recorrer_lista(void) {
+void recorrer_lista(void){
     if (PRIM == NULL) {
         printf("Cola vacía.\n");
         return;
@@ -83,4 +83,11 @@ void recorrer_lista(void) {
         actual = actual->sig;
     }
     //printf("Fin de la cola.\n");
+}
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+// Solo verifica si la cola está vacía
+bool lista_vacia(){
+    return PRIM == NULL; 
 }

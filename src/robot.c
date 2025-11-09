@@ -20,6 +20,19 @@ void limpiar_buffer() {
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
+void inicializar_sistema() {
+    robot.es_primer_ciclo = true; 
+    robot.ha_llegado = false;
+
+    while (!lista_vacia()) {
+        int x, y;
+        desencolar_lista(&x, &y);
+    }
+    PRIM = ULT = NULL;  // Aseguramos cola vacía
+}
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
 Posicion capturar_posiciones_iniciales_del_robot() {
     Posicion p;
     do {
@@ -87,23 +100,30 @@ Posicion capturar_posiciones_destino_del_robot() {
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
-// cuando el robot llega despoues de hacer los 2 destinos y le ingresamos nuevos destinos solo pide 1 destino en vez de 2, hay que corregir eso, creo que es aca
-void inicializar_robot() {
-    puts("\033[1m\n  RECUERDE: Para establecer coordenadas, el valor de \n  la posicion osila de 1 a 20, en X e Y.\033[0m\n");
-    if (robot.ha_llegado == true) {
-        robot.posicion_inicial = robot.posicion_actual;    
-        robot.posicion_destino = capturar_posiciones_destino_del_robot();
-        robot.ha_llegado = false;
-    } else {
 
+void inicializar_robot() {
+    puts("\033[1m\n  RECUERDE: coordenadas de 1 a 20 en X e Y.\033[0m\n");
+
+    // SOLO PRIMERA VEZ: pedir posición inicial
+    if (robot.es_primer_ciclo) {
         robot.posicion_inicial = capturar_posiciones_iniciales_del_robot();
         robot.posicion_actual = robot.posicion_inicial;
-
-        robot.posicion_destino = capturar_posiciones_destino_del_robot();
-        robot.posicion_destinoB = capturar_posiciones_destino_del_robot();
-  
-        robot.ha_llegado = false;
+        robot.es_primer_ciclo = false;  // Ya no es primera vez
     }
+    // SEGUNDA: reutilizar posicion_actual como inicial
+    else {
+        robot.posicion_inicial = robot.posicion_actual;
+    }
+
+    // Y SIEMPRE: pedir A y B
+    printf("\n=== Ingrese destino A ===\n");
+    robot.posicion_destino = capturar_posiciones_destino_del_robot();
+
+    printf("\n=== Ingrese destino B ===\n");
+    robot.posicion_destinoB = capturar_posiciones_destino_del_robot();
+
+    robot.ha_llegado = false;
+    imprimir_rastro_del_robot();
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
@@ -112,7 +132,9 @@ void reiniciar_robot() {
     robot.posicion_inicial = (Posicion){-1, -1};
     robot.posicion_actual = (Posicion){-1, -1};
     robot.posicion_destino = (Posicion){-1, -1};
+    robot.posicion_destinoB = (Posicion){-1, -1};
     robot.ha_llegado = false;
+    robot.es_primer_ciclo = true;
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
@@ -163,29 +185,39 @@ void imprimir_rastro_del_robot() {
 //Llama Junta las funciones que ayudan a descubrir la ruta que debe tomar el robot
 
 void planificar_ruta(){
-      bool vacia = matriz_vacia(matriz);
+    bool vacia = matriz_vacia(matriz);
     if (vacia) {
         puts("\n\033[33m\033[1m  ⚠️  No se puede planificar ruta. Debe cargar el mapa antes.\033[0m");
+        return;  // Vuelve al menú
     } else if (robot.posicion_actual.x == -1) {
         puts("\n\033[33m\033[1m  ⚠️  No se puede planificar ruta. Debe establecer coordenadas del robot antes.\033[0m");
+        return;  // Vuelve al menú
     } else {
         if (robot.ha_llegado != true) {
-            explorador();
-            int cant=0;
+            // Llamar al explorador (BFS)
+            if (!explorador()) {
+                // No hay ruta: mostrar mapa + error debajo
+                imprimir_mapa_ascii();
+                puts("\n\033[1m\033[31mError: No se encontró ruta. El robot o el destino está inaccesible por obstáculos.\033[0m");
+                puts("Sugerencia: Reinicie el robot (opción 2) o cambie el destino.");
+                return;  // Vuelve al menú sin proceder
+            }
 
+            // Si hay ruta, proceder
+            int cant = 0;
             actualizar_posicion(robot.posicion_actual.x, robot.posicion_actual.y);
-            Posicion pos;
+            Posicion pos = {robot.posicion_actual.x, robot.posicion_actual.y};  // Inicializar pos
 
-            while((pos.x != robot.posicion_destino.x || pos.y != robot.posicion_destino.y) && cant < 100){ //cant es una variable de seguridad nada mas
-        
+            while ((pos.x != robot.posicion_destino.x || pos.y != robot.posicion_destino.y) && cant < 100) {
                 cant++;
-                //printf("Cantidad de iteraciones: %d\n", cant);
-
                 pos = encontrar_camino(cant);
             }
-            
-            //printf(" Esta es la cantidad de %d pasos ", cant);
-            //imprimir_mapa_ascii();
+
+            // Si el loop salió por límite (raro, pero por seguridad)
+            if (cant >= 100) {
+                puts("\n\033[1m\033[31mError: Ruta demasiado larga o loop infinito detectado.\033[0m");
+                return;
+            }
             
         } else if (robot.ha_llegado == true) {
             printf("\n  \033[36m\033[1m🤖 Establezca nuevas coordenadas para poder planificar ruta.\033[0m\n");
@@ -244,8 +276,36 @@ void intercambiar_destinos(){
 
 void automatizar_robot(){
     
+    if (robot.es_primer_ciclo || robot.ha_llegado) {
+        printf("\n  \033[36m\033[1mEstablezca nuevas coordenadas para poder planificar ruta.\033[0m\n");
+        return;
+    }
+
     planificar_ruta();
+
+    if (robot.ha_llegado == true) {
+        return; // Porque necesito nuevos destinos
+    }
+
+    // Si no hay ruta (lista vacía), mostrar error con mapa
+    if (lista_vacia()) {
+        imprimir_mapa_ascii();
+        puts("\n\033[1m\033[31mError: No se encontró ruta. El robot o el destino está inaccesible por obstáculos.\033[0m");
+        puts("Sugerencia: Reinicie el mapa o cambie el destino.");
+        return;  // Vuelve al menú
+    }
+
     mostrar_ruta();
     limpiarPantalla();
+
     mover_robot();
+}
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+bool robot_esta_inicializado(){
+    return robot.posicion_actual.x != -1 && 
+           robot.posicion_actual.y != -1 &&
+           robot.posicion_destino.x != -1 && 
+           robot.posicion_destino.y != -1;
 }

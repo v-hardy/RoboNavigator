@@ -12,6 +12,7 @@ typedef struct {
     Posicion posicion_destino; //destino A (donde busca el objeto)
     Posicion posicion_destinoB; //destino B (donde deja el objeto)
     bool ha_llegado;
+    bool es_primer_ciclo;
 } Robot;
 
 void inicializar_robot();
@@ -26,5 +27,7 @@ void intercambiar_destinos();
 void planificar_ruta();
 void mostrar_ruta();
 void automatizar_robot();
+void inicializar_sistema();
+bool robot_esta_inicializado();
 
 #endif

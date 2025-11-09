@@ -1,5 +1,6 @@
 #ifndef LISTA_H
 #define LISTA_H
+#include <stdbool.h>
 
 // Lista simplemente enlazada
 typedef struct Nodo {
@@ -15,6 +16,7 @@ extern Nodo* ULT;
 // Prototipos de funciones
 void encolar_lista(int x, int y);
 int desencolar_lista(int* x, int* y); 
-void recorrer_lista(void);
-
+void recorrer_lista();
+bool lista_vacia();
+void vaciar_lista(void);
 #endif

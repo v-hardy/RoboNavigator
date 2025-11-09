@@ -65,33 +65,35 @@ int marcarAdyacentes(int row, int col, int value, int robot_encontrado){
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// Llama a "marcarAdyacente()"" para que marque el camino hasta que se encuentre con el destino
-// n es una variable de control para el bucle, condicion captura si se encontro o no el destino en "marcarAdyacente()" para no seguir iterando demas
+// Llama a "marcarAdyacente()" para que marque el camino hasta que se encuentre con el destino
+// Devuelve true si encontró el robot, false si no hay camino
 
-void explorador(){
+bool explorador(){
+    int n = 0;
+    bool robot_encontrado = false;
+    bool avanzó;
 
-    int n=0;
-    int condicion=0;    
+    while (n < 500 && !robot_encontrado) {
+        avanzó = false;
 
-    while(condicion == 0 && n < 500){
-
-        for(int i=0; i < FILAS; i++){
-            for(int j=0; j < COLUMNAS; j++){
-
-                if(matriz[i][j] == n+1 && condicion == 0){
-
-                    condicion = marcarAdyacentes(i, j, n+1, condicion);
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                if (matriz[i][j] == n + 1) {
+                    if (marcarAdyacentes(i, j, n + 1, robot_encontrado)) {
+                        // Encontró el robot: guarda posición del destino
+                        actualizar_posicion(i, j);
+                        return true;
+                    }
+                    avanzó = true;
                 }
-                
             }
         }
 
-        //printf("valor de n: %d \n", n);
+        if (!avanzó) break;  // No hay más celdas por explorar, sin camino
         n++;
-        //printf("valor de condicion: %d \n", condicion);
-
     }
 
+    return false;  // No se encontró el robot
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
