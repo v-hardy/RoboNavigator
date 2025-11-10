@@ -48,7 +48,7 @@ int ingresar_y_validar_opcion() {
         
         if (scanf("%d", &opcion) != 1) {
             // Entrada inválida
-            limpiarBuffer();  // Limpia el buffer
+            limpiarBuffer();  
             printf("\033[1A"); // Sube una línea
             printf("\033[K");  // Borra la línea
             printf("Ingrese una opcion valida: ");
@@ -77,8 +77,10 @@ int main() {
         SetConsoleOutputCP(CP_UTF8);
     #endif
     
-    srand(time(NULL));    // Inicializar la semilla del generador aleatorio
- 
+    limpiarPantalla();
+    imprimir_mapa_ascii();
+    puts("\n");
+
     int iteracion = 1;
     int opcion_validada = 0;
 

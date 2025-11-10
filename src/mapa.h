@@ -4,8 +4,8 @@
 #define FILAS 20
 #define COLUMNAS 20
 
-#include "posicion.h" // para Posicion
-#include "robot.h"    // para Robot
+#include "posicion.h" 
+#include "robot.h"    
 
 extern int matriz[FILAS][COLUMNAS];
 extern int ultimo_mapa_seleccionado;
@@ -21,5 +21,6 @@ void borrar_rastros_del_mapa();
 void imprimir_matriz();
 void imprimir_mapa_ascii();
 int agregar_obstaculo(int fila, int columna);
+void limpiar_numeritos(void);
 
 #endif

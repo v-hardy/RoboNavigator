@@ -12,7 +12,7 @@
 #include <unistd.h>
 #endif
 
-
+extern int ultimo_mapa_seleccionado;
 extern int matriz[FILAS][COLUMNAS];
 extern Robot robot;
 
@@ -188,30 +188,28 @@ void imprimir_rastro_del_robot() {
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-//Llama Junta las funciones que ayudan a descubrir la ruta que debe tomar el robot
+//Llama a las funciones que ayudan a descubrir la ruta que debe tomar el robot
 
 void planificar_ruta(){
     bool vacia = matriz_vacia(matriz);
     if (vacia) {
         puts("\n\033[33m\033[1m  ⚠️  No se puede planificar ruta. Debe cargar el mapa antes.\033[0m");
-        return;  // Vuelve al menú
+        return;  
     } else if (robot.posicion_actual.x == -1) {
         puts("\n\033[33m\033[1m  ⚠️  No se puede planificar ruta. Debe establecer coordenadas del robot antes.\033[0m");
-        return;  // Vuelve al menú
+        return;  
     } else {
         if (robot.ha_llegado != true) {
-            // Llamar al explorador (BFS)
+            
             if (!explorador()) {
-                // No hay ruta: mostrar mapa + error debajo
-                imprimir_mapa_ascii();
-                puts("\n\033[1m\033[31mError: No se encontró ruta. El robot o el destino está inaccesible por obstáculos.\033[0m");
-                return;  // Vuelve al menú sin proceder
+                puts("\n\033[1m\033[31m  Error: No se encontró ruta. El robot o el destino está inaccesible por obstáculos.\033[0m");
+                return;  
             }
 
-            // Si hay ruta, proceder
+            // Si hay ruta
             int cant = 0;
             actualizar_posicion(robot.posicion_actual.x, robot.posicion_actual.y);
-            Posicion pos = {robot.posicion_actual.x, robot.posicion_actual.y};  // Inicializar pos
+            Posicion pos = {robot.posicion_actual.x, robot.posicion_actual.y};  
 
             while ((pos.x != robot.posicion_destino.x || pos.y != robot.posicion_destino.y) && cant < 100) {
                 cant++;
@@ -220,12 +218,12 @@ void planificar_ruta(){
 
             // Si el loop salió por límite (raro, pero por seguridad)
             if (cant >= 100) {
-                puts("\n\033[1m\033[31mError: Ruta demasiado larga o loop infinito detectado.\033[0m");
+                puts("\n\033[1m\033[31m  Error: Ruta demasiado larga o loop infinito detectado.\033[0m");
                 return;
             }
             
         } else if (robot.ha_llegado == true) {
-            printf("\n  \033[36m\033[1m🤖 Establezca nuevas coordenadas para poder planificar ruta.\033[0m\n");
+            printf("\n  \033[36m\033[1m  🤖 Establezca nuevas coordenadas para poder planificar ruta.\033[0m\n");
         }
     }
 }
@@ -237,7 +235,6 @@ void planificar_ruta(){
 void mostrar_ruta(){
     recorrer_lista(); //Internamente marca la ruta planificada previamente
     imprimir_rastro_del_robot();
-    //imprimir_mapa_ascii();
 
     #ifdef _WIN32
         Sleep(800);  // milisegundos en Windows
@@ -251,17 +248,17 @@ void mostrar_ruta(){
 //Avanza el robot actualizando la posicion actual del mismo y va imprimiendo el mapa, tambien actualiza el valor Booleano que indica si se llego o no a destino
 
 void mover_robot(){
-
+    
     int row, col;
     while (desencolar_lista(&row, &col)){
-
+        
         robot.posicion_actual.x = row;
         robot.posicion_actual.y = col;
        
         limpiarPantalla();
         borrar_rastros_del_mapa();
         imprimir_rastro_del_robot();
-    
+        
         imprimir_mapa_ascii();
         #ifdef _WIN32
             Sleep(800);  // milisegundos en Windows
@@ -275,7 +272,7 @@ void mover_robot(){
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-//Una vez el robot llega a destino, se asigna destinoB guardado a destino para calcular la  nueva ruta
+//Una vez el robot llega a destino, se asigna destinoB guardado a destino para calcular la nueva ruta
 
 void intercambiar_destinos(){
     robot.posicion_destino.x = robot.posicion_destinoB.x;
@@ -286,12 +283,12 @@ void intercambiar_destinos(){
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-//Junta las funciones en una serie de pasos ordenados para que el robot haga todo el calculo y el movimiento por si mismo
+//Pasos ordenados para que el robot haga todo el calculo y el movimiento por si mismo
 
 void automatizar_robot(){
     
     if (robot.es_primer_ciclo || robot.ha_llegado) {
-        printf("\n  \033[36m\033[1mEstablezca nuevas coordenadas para poder planificar ruta.\033[0m\n");
+        printf("\n  \033[36m\033[1m  Establezca nuevas coordenadas para poder planificar ruta.\033[0m\n");
         return;
     }
 
@@ -301,14 +298,13 @@ void automatizar_robot(){
         return; // Porque necesito nuevos destinos
     }
 
-    // Si no hay ruta (lista vacía), mostrar error con mapa
+    // Si no hay ruta (lista vacía), muestro error
     if (lista_vacia()) {
-        //imprimir_mapa_ascii();
-        puts("\n\033[1m\033[31mError: No se encontró ruta. El robot o el destino está inaccesible por obstáculos.\033[0m");
         
-        /// luego de aca deberia reestablecer todo a cero para evitar error
-        puts("Sugerencia: Reinicie el mapa o cambie el destino.");
-        return;  // Vuelve al menú
+        puts("\n\033[1m\033[33m  Se reinicio el mapa cambie las coordenadas.\033[0m");
+        limpiar_numeritos();
+        
+        return;  
     }
 
     mostrar_ruta();

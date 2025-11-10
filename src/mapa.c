@@ -128,7 +128,6 @@ void seleccionar_mapa(){
 
     limpiarPantalla();
     puts("\n\033[32m\033[1m  Mapa cargado con éxito.\033[0m\n");
-    //imprimir_mapa_ascii();
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
@@ -168,7 +167,7 @@ void cargar_matriz(int mapa[FILAS][COLUMNAS]) {
 void borrar_rastros_del_mapa() {
     for (int i = 0; i < FILAS; i++) {
         for (int j = 0; j < COLUMNAS; j++) {
-            if ((matriz[i][j] != -1) && (matriz[i][j] == 1) &&(matriz[i][j] == -7)) {
+            if ((matriz[i][j] != -1) && (matriz[i][j] != 1) &&(matriz[i][j] != -7)) {
                 matriz[i][j] = 0;
             }
         }
@@ -222,11 +221,7 @@ void imprimir_mapa_ascii() {
                 printf("🤖​");  // Robot
             } else if (matriz[i][j] == -7) {
                 printf("​🔸​​​");  // Por recorrer
-            } /*else if (matriz[i][j] == 4) {
-                printf("​🚩​​​");  // Parada intermedia
-                
-            }*/
-            else if (matriz[i][j] == 1) {
+            } else if (matriz[i][j] == 1) {
                 printf("🏁​​");  // Destino
             } else {  
                 printf("░░");  // Espacio libre
@@ -251,4 +246,18 @@ int agregar_obstaculo(int fila, int columna) {
 
     matriz[f][c] = -1;
     return 0;
+}
+
+// <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
+
+void limpiar_numeritos(){
+
+     for (int i = 0; i < FILAS; i++) {
+        for (int j = 0; j < COLUMNAS; j++) {
+
+            if (matriz[i][j] != -1){
+                matriz[i][j]=0;
+            }
+        }
+    }
 }

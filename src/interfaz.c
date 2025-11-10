@@ -81,19 +81,16 @@ void opcion_tres() {
 // 4.- Agregar Obstaculo
 
 void opcion_cuatro(){
-    printf("Opcion 4: Agregar Obstaculo\n\n");
 
     // 1. Validar mapa
     if (matriz_vacia(matriz)) {
-        printf("  \033[33m\033[1mAdvertencia: Debe cargar un mapa primero.\033[0m\n\n");
+        printf("\n  \033[33m\033[1mAdvertencia: Debe cargar un mapa primero.\033[0m\n\n");
         return;
     }
 
     int fila, columna;
     int resultado;
 
-    // MOSTRAR MAPA ANTES DE PEDIR COORDENADAS
-    printf("  Mapa actual:\n");
     imprimir_mapa_ascii();
 
     printf("\n  Ingrese coordenadas del obstáculo (fila columna, 1-20): ");
@@ -109,23 +106,22 @@ void opcion_cuatro(){
     resultado = agregar_obstaculo(fila, columna);
 
     limpiarPantalla();
-    printf("Opcion 4: Agregar Obstaculo\n\n");
 
     if (resultado == 0) {
+        printf("\n  \033[32m\033[1mÉxito: Obstáculo agregado en (%d, %d)\033[0m", fila, columna);
         imprimir_mapa_ascii();
-        printf("  \033[32m\033[1mÉxito: Obstáculo agregado en (%d, %d)\033[0m\n\n", fila, columna);
 
     } else {
         imprimir_mapa_ascii();
         // Errores
         if (resultado == -1) {
-            printf("  \033[1m\033[31mError: Coordenadas fuera de rango o ya hay obstáculo.\033[0m\n\n");
+            printf("\033[1m\033[31m  Error: Coordenadas fuera de rango o ya hay obstáculo.\033[0m\n\n");
         } else if (resultado == -2) {
-            printf("  \033[1m\033[31mError: No puedes colocar un obstáculo sobre el robot.\033[0m\n\n");
+            printf("\033[1m\033[31m  Error: No puedes colocar un obstáculo sobre el robot.\033[0m\n\n");
         } else if (resultado == 1) {
-            printf("  \033[1m\033[31mError: No puedes colocar un obstáculo en el destino.\033[0m\n\n");
+            printf("\033[1m\033[31m  Error: No puedes colocar un obstáculo en el destino.\033[0m\n\n");
         } else {
-            printf("  \033[1m\033[31mError: Casilla ocupada (valor: %d).\033[0m\n\n", resultado);
+            printf("\033[1m\033[31m  Error: Casilla ocupada (valor: %d).\033[0m\n\n", resultado);
         }
         printf("  Mapa sin cambios:\n");
     }
@@ -136,19 +132,19 @@ void opcion_cuatro(){
 // 5.- Mover robot hacia el destino
 
 void opcion_cinco(){
-    borrar_rastros_del_mapa(); // SE AGREGA
+
 
     // 1. Validar que haya un mapa cargado
     if (matriz_vacia(matriz)) {
         puts("\n\033[33m\033[1m  ¡Error! Debe cargar un mapa antes de mover el robot.\033[0m");
-        puts("  Use la opción 1 para cargar un mapa.\n");
+        puts("\n  Use la opción 1 para cargar un mapa.\n");
         return;
     }
 
     // 2. Validar que el robot esté inicializado
     if (!robot_esta_inicializado()) {
         puts("\n\033[33m\033[1m  ¡Error! Debe inicializar el robot con coordenadas.\033[0m");
-        puts("  Use la opción 2 para establecer posición inicial y destinos.\n");
+        puts("\n  Use la opción 2 para establecer posición inicial y destinos.\n");
         return;
     }
 
@@ -157,17 +153,14 @@ void opcion_cinco(){
     if (lista_vacia() && robot.posicion_actual.x != -1){
         reiniciar_robot();
         borrar_rastros_del_mapa();
+        return;
     }
-    
-    borrar_rastros_del_mapa(); // estaria quedando el  destino
-    reiniciar_robot();
-
     
     if (robot_ha_llegado()) { 
         if (robot.posicion_actual.x == robot.posicion_destinoB.x &&
             robot.posicion_actual.y == robot.posicion_destinoB.y) {
             
-            printf("\n\033[32m\033[1m  Llegó al fin. Ingrese nuevos destinos.\033[0m\n");
+            printf("\n\033[32m\033[1m  Llegó al destino B. Ingrese nuevos destinos.\033[0m\n");
 
         } else {
             printf("\n  \033[36m\033[1mEl Robot llegó al punto A. Ahora va al B.\033[0m\n");
@@ -221,12 +214,9 @@ void opcion_seis() {
     if (ultimo_mapa_seleccionado != 0) {
         printf("  Se ha restaurado el Mapa %d.\n", ultimo_mapa_seleccionado);
     }
-    puts("  Robot, destinos y rutas han sido eliminados.\n");
 
     imprimir_mapa_ascii();
 
-    puts("\n  Presione Enter para continuar...");
-    getchar();
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>

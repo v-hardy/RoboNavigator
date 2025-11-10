@@ -79,15 +79,13 @@ void recorrer_lista(void){
             matriz[actual->x][actual->y] = -7;
         }
         
-        //printf("  [%d] -> (%d, %d)\n", pos++, actual->x+1, actual->y+1);
         actual = actual->sig;
     }
-    //printf("Fin de la cola.\n");
 }
 
 // <======================================= SEPARADOR DE BAJO PRESUPUESTO =======================================>
 
-// Solo verifica si la cola está vacía
+// Verifica si la cola está vacía
 bool lista_vacia(){
     return PRIM == NULL; 
 }
