@@ -302,8 +302,11 @@ void automatizar_robot(){
     if (lista_vacia()) {
         
         puts("\n\033[1m\033[33m  Se reinicio el mapa cambie las coordenadas.\033[0m");
-        limpiar_numeritos();
         
+        reiniciar_robot();
+        borrar_rastros_del_mapa();
+        limpiar_numeritos();
+
         return;  
     }
 

@@ -108,7 +108,7 @@ void opcion_cuatro(){
     limpiarPantalla();
 
     if (resultado == 0) {
-        printf("\n  \033[32m\033[1mÉxito: Obstáculo agregado en (%d, %d)\033[0m", fila, columna);
+        printf("\n  \033[32m\033[1mÉxito: Obstáculo agregado en (%d, %d)\033[0m\n", fila, columna);
         imprimir_mapa_ascii();
 
     } else {
@@ -149,13 +149,7 @@ void opcion_cinco(){
     }
 
     automatizar_robot();
-    
-    if (lista_vacia() && robot.posicion_actual.x != -1){
-        reiniciar_robot();
-        borrar_rastros_del_mapa();
-        return;
-    }
-    
+
     if (robot_ha_llegado()) { 
         if (robot.posicion_actual.x == robot.posicion_destinoB.x &&
             robot.posicion_actual.y == robot.posicion_destinoB.y) {
